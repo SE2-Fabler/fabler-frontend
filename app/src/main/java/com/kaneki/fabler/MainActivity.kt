@@ -19,6 +19,10 @@ import com.kaneki.fabler.ui.components.TabbedCard
 import com.kaneki.fabler.ui.header.Header
 import com.kaneki.fabler.ui.theme.FablerTheme
 
+import com.kaneki.fabler.ui.tabs.user.UserScreen
+import com.kaneki.fabler.ui.tabs.story.StoryScreen
+import com.kaneki.fabler.ui.tabs.creations.CreationScreen
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
