@@ -16,9 +16,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Alignment
+
 
 import com.kaneki.fabler.R
 
@@ -47,46 +55,62 @@ fun CreationScreen() {
         modifier = Modifier.fillMaxSize()
     ) {
         items(creationList.size) { index ->
-            CreationCard(creation = creationList[index])
+            CreationCard(creation = creationList[index], isBookmarked = false, onBookmarkClicked = {})
         }
     }
 }
 
 @Composable
-fun CreationCard(creation: Creation) {
+fun CreationCard(creation: Creation, isBookmarked: Boolean, onBookmarkClicked: (Boolean) -> Unit) {
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .aspectRatio(2f/3f)
-            .background(Color.Transparent)
+            .aspectRatio(2f / 3f) // Aspect ratio of the card (vertical rectangle)
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize().background(Color.Transparent)
+        Surface(
+            modifier = Modifier
+                .fillMaxSize(),
+            color = Color.Transparent, // Set surface color to transparent
+            contentColor = Color.Black // Set content color for text
         ) {
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize()
-                    .background(Color.Transparent)
+            Column(
+                modifier = Modifier.fillMaxSize()
             ) {
-                Image(
-                    painter = painterResource(id = creation.imageResId),
-                    contentDescription = "Creation Image",
+                Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .aspectRatio(2f/3f),
-                    contentScale = ContentScale.Crop // Scale the image to fill the available space
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .background(Color.Transparent) // Set background color of the Box to transparent
+                ) {
+                    Image(
+                        painter = painterResource(id = creation.imageResId),
+                        contentDescription = "Creation Image",
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .aspectRatio(2f/3f),
+                        contentScale = ContentScale.Crop // Scale the image to fill the available space
+                    )
+                    IconButton(
+                        onClick = { onBookmarkClicked(!isBookmarked) },
+                        modifier = Modifier.align(Alignment.TopEnd)
+                    ) {
+                        if (isBookmarked) {
+                            Icon(Icons.Filled.Star, contentDescription = "Bookmarked")
+                        } else {
+                            Icon(Icons.Outlined.Star, contentDescription = "Bookmark")
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(20.dp)) // Add space between image and text
+                Text(
+                    text = creation.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color.Black,
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .fillMaxWidth()
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp)) // Add space between image and text
-            Text(
-                text = creation.title,
-                style = MaterialTheme.typography.titleSmall,
-                color = Color.Black,
-                modifier = Modifier
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                    .fillMaxWidth()
-            )
         }
     }
 }

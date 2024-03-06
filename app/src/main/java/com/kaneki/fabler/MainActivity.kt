@@ -22,6 +22,7 @@ import com.kaneki.fabler.ui.theme.FablerTheme
 import com.kaneki.fabler.ui.tabs.user.UserScreen
 import com.kaneki.fabler.ui.tabs.story.StoryScreen
 import com.kaneki.fabler.ui.tabs.creations.CreationScreen
+import com.kaneki.fabler.ui.tabs.bookmarks.BookmarkScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
