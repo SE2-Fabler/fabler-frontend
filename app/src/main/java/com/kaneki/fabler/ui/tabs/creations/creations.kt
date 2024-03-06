@@ -34,19 +34,19 @@ import kotlin.random.Random
 import com.kaneki.fabler.R
 
 // Data class representing a creation
-data class Creation(val id: Int, val title: String, val imageResId: Int)
+data class Creation(val id: Int, val title: String, val imageResId: Int, val isBookmarked: Boolean)
 
 // List of sample creations
 val creationList = listOf(
-    Creation(1, "Creation 1", R.drawable.bg1),
-    Creation(2, "Creation 2", R.drawable.bg2),
-    Creation(2, "Creation 3", R.drawable.bg3),
-    Creation(2, "Creation 4", R.drawable.bg4),
-    Creation(5, "Creation 5", R.drawable.bg5),
-    Creation(6, "Creation 6", R.drawable.bg6),
-    Creation(7, "Creation 7", R.drawable.bg7),
-    Creation(8, "Creation 8", R.drawable.bg8),
-    Creation(9, "Creation 9", R.drawable.bg9),
+    Creation(1, "Creation 1", R.drawable.bg1, false ),
+    Creation(2, "Creation 2", R.drawable.bg2, true),
+    Creation(2, "Creation 3", R.drawable.bg3, true),
+    Creation(2, "Creation 4", R.drawable.bg4, false),
+    Creation(5, "Creation 5", R.drawable.bg5, true),
+    Creation(6, "Creation 6", R.drawable.bg6, false),
+    Creation(7, "Creation 7", R.drawable.bg7, true),
+    Creation(8, "Creation 8", R.drawable.bg8, true),
+    Creation(9, "Creation 9", R.drawable.bg9, false),
 )
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -58,13 +58,13 @@ fun CreationScreen() {
     ) {
         items(creationList.size) { index ->
             val isBookmarked = Random.nextBoolean()
-            CreationCard(creation = creationList[index], isBookmarked = isBookmarked, onBookmarkClicked = {})
+            CreationCard(creation = creationList[index], onBookmarkClicked = {})
         }
     }
 }
 
 @Composable
-fun CreationCard(creation: Creation, isBookmarked: Boolean, onBookmarkClicked: (Boolean) -> Unit) {
+fun CreationCard(creation: Creation, onBookmarkClicked: (Boolean) -> Unit) {
     Card(
         modifier = Modifier
             .padding(8.dp)
@@ -94,10 +94,10 @@ fun CreationCard(creation: Creation, isBookmarked: Boolean, onBookmarkClicked: (
                         contentScale = ContentScale.Crop // Scale the image to fill the available space
                     )
                     IconButton(
-                        onClick = { onBookmarkClicked(!isBookmarked) },
+                        onClick = { onBookmarkClicked(!creation.isBookmarked) },
                         modifier = Modifier.align(Alignment.TopEnd)
                     ) {
-                        if (isBookmarked) {
+                        if (creation.isBookmarked) {
                             Icon(Icons.Filled.Star, contentDescription = "Bookmarked")
                         } else {
                             Icon(Icons.TwoTone.Star, contentDescription = "Bookmark")

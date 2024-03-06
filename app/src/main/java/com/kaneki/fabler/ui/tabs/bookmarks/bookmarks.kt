@@ -27,11 +27,11 @@ data class Creation(val id: Int, val title: String, val imageResId: Int)
 
 // List of sample creations
 val creationList = listOf(
-    Creation(1, "Creation 1", R.drawable.bg1),
     Creation(2, "Creation 2", R.drawable.bg2),
-    Creation(2, "Creation 3", R.drawable.bg3),
-    Creation(2, "Creation 4", R.drawable.bg4),
+    Creation(3, "Creation 3", R.drawable.bg3),
     Creation(5, "Creation 5", R.drawable.bg5),
+    Creation(7, "Creation 7", R.drawable.bg7),
+    Creation(8, "Creation 8", R.drawable.bg8),
 )
 
 @OptIn(ExperimentalFoundationApi::class)
