@@ -93,24 +93,51 @@ fun SimpleTabLayout() {
                 //horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(text = "Selected page: ${titles[tabIndex]}")
-                TabEntry(title = "title 1", author = "test author")
-                TabEntry(title = "title 2", author = "test author")
+                when (tabIndex) {
+                    0 -> UserScreen()
+                    1 -> StoryScreen()
+                }
             }
         }
+
     )
 }
 
 @Composable
-fun TabEntry(title: String, author: String) {
+fun UserScreen() {
+    UserEntry(name = "test author")
+    UserEntry(name = "test author 2")
+}
+
+@Composable
+fun StoryScreen() {
+    StoryEntry(title = "title 1", author = "test author")
+    StoryEntry(title = "title 2", author = "test author")
+}
+
+@Composable
+fun StoryEntry(title: String, author: String) {
     Column(
         modifier = Modifier.fillMaxWidth()
-            .border(BorderStroke(2.dp, Color.Black))
+            .border(BorderStroke(1.dp, Color.White))
     ) {
         Text(
             text = title
         )
         Text(
             text = "By: $author"
+        )
+    }
+}
+
+@Composable
+fun UserEntry(name: String) {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+            .border(BorderStroke(1.dp, Color.White))
+    ) {
+        Text(
+            text = name
         )
     }
 }
