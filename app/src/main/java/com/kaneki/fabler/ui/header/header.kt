@@ -1,6 +1,7 @@
 package com.kaneki.fabler.ui.header
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,7 +25,7 @@ import com.kaneki.fabler.R
 
 @Preview
 @Composable
-fun Header() {
+fun Header(onSearchToggle: () -> Unit) {
 
     Surface(Modifier.fillMaxWidth()) {
 
@@ -34,7 +35,7 @@ fun Header() {
                 painter = painterResource(id = R.drawable.search),
                 contentDescription = "Search",
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.secondary),
-                modifier = Modifier.padding(10.dp)
+                modifier = Modifier.padding(10.dp).clickable(onClick = onSearchToggle)
             )
 
             Spacer(Modifier.weight(1f))
