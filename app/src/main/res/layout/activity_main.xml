@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/fable1"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:paddingHorizontal="20dp"
+        android:src="@drawable/fable1" />
+
+    <ImageView
+        android:id="@+id/fable2"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_toRightOf="@id/fable1"
+        android:paddingHorizontal="20dp"
+        android:src="@drawable/fable2" />
+
+    <TextView
+        android:id="@+id/fable1text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="300dp"
+        android:text="ABC"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/fable2text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="430dp"
+        android:layout_marginTop="300dp"
+        android:text="XYZ"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Story"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="50dp"
+        android:textSize="24sp" />
+
+
+</RelativeLayout>
