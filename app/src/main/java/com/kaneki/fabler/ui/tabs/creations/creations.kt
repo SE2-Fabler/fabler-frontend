@@ -23,9 +23,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.twotone.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Alignment
+
+import kotlin.random.Random
 
 
 import com.kaneki.fabler.R
@@ -54,7 +57,8 @@ fun CreationScreen() {
         modifier = Modifier.fillMaxSize()
     ) {
         items(creationList.size) { index ->
-            CreationCard(creation = creationList[index], isBookmarked = false, onBookmarkClicked = {})
+            val isBookmarked = Random.nextBoolean()
+            CreationCard(creation = creationList[index], isBookmarked = isBookmarked, onBookmarkClicked = {})
         }
     }
 }
@@ -96,7 +100,7 @@ fun CreationCard(creation: Creation, isBookmarked: Boolean, onBookmarkClicked: (
                         if (isBookmarked) {
                             Icon(Icons.Filled.Star, contentDescription = "Bookmarked")
                         } else {
-                            Icon(Icons.Outlined.Star, contentDescription = "Bookmark")
+                            Icon(Icons.TwoTone.Star, contentDescription = "Bookmark")
                         }
                     }
                 }
