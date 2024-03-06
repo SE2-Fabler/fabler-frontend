@@ -38,42 +38,21 @@ import com.kaneki.fabler.R
 import com.kaneki.fabler.ui.tabs.user.UserEntry
 import com.kaneki.fabler.ui.tabs.user.userList
 
-/*
-@Composable
-fun SimpleTabLayout() {
-    val titles = listOf("Users", "Stories")
-    var tabIndex by remember { mutableStateOf(0) }
+import androidx.compose.animation.core.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme
 
-    Scaffold(
-        topBar = {
-            TabRow(selectedTabIndex = tabIndex) {
-                titles.forEachIndexed { index, title ->
-                    Tab(
-                        text = { Text(title) },
-                        selected = tabIndex == index,
-                        onClick = { tabIndex = index }
-                    )
-                }
-            }
-        },
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize(),
-                //verticalArrangement = Arrangement.Top,
-                //horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = "Selected page: ${titles[tabIndex]}")
-                when (tabIndex) {
-                    0 -> UserScreen()
-                    1 -> StoryScreen()
-                }
-            }
-        }
-
-    )
-}*/
 
 class Story(val title: String, val author: String, val body: String, val profileImageResId: Int){}
 
@@ -115,47 +94,63 @@ fun StoryScreen() {
 }
 
 @Composable
-fun StoryPopup(content: Story, showPopup: Boolean, onClickOutside: () -> Unit) {
-    if (showPopup) {
+fun StoryPopup(content: Story, showPopup: Boolean, onClose: () -> Unit) {
+    AnimatedVisibility(
+        visible = showPopup,
+        enter = fadeIn() + slideInVertically(),
+        exit = fadeOut() + slideOutVertically()
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Gray)
-                .zIndex(10F),
+                .background(Color.Black.copy(alpha = 0.5f))
+                .zIndex(10f),
             contentAlignment = Alignment.Center
         ) {
-            Popup(
-                alignment = Alignment.Center,
-                properties = PopupProperties(
-                    excludeFromSystemGesture = true,
-                ),
-                onDismissRequest = { onClickOutside() }
+            Box(
+                modifier = Modifier
+                    .width(300.dp)
+                    .padding(16.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(Color.White)
             ) {
-                Box(
-                    Modifier
-                        .width(200.dp)
-                        .height(400.dp)
-                        .background(Color.White)
-                        .clip(RoundedCornerShape(4.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Top
                 ) {
-                    Column(
-
-                    ){
-                        Text(
-                            text = content.title
-                        )
-                        Text(
-                            text = "By: ${content.author}"
-                        )
-                        Text(
-                            text = content.body
-                        )
-                    }
+                    Text(
+                        text = content.title,
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = Color.Black
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "By: ${content.author}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Gray
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = content.body,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Black
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Divider(color = Color.LightGray, thickness = 1.dp)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Close",
+                        style = MaterialTheme.typography.titleSmall,
+                        color = Color.Blue,
+                        modifier = Modifier.clickable { onClose() }
+                    )
                 }
             }
         }
     }
-
 }
 
 @Composable
@@ -189,6 +184,6 @@ fun StoryEntry(content: Story) {
             )
         }
     }
-    StoryPopup(content = content, showPopup = showPopup, onClickOutside = {showPopup = false})
+    StoryPopup(content = content, showPopup = showPopup, {showPopup = false})
 }
 
