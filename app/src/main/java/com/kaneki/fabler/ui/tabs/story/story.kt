@@ -1,27 +1,19 @@
-package com.kaneki.fabler.ui.tabs.userstory
+package com.kaneki.fabler.ui.tabs.story
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 
-@Preview(showBackground = true)
+/*
 @Composable
 fun SimpleTabLayout() {
     val titles = listOf("Users", "Stories")
@@ -56,24 +48,35 @@ fun SimpleTabLayout() {
         }
 
     )
-}
+}*/
 
 class Story(val title: String, val author: String, val body: String){
 
 }
 
-@Composable
-fun UserScreen() {
-    UserEntry(name = "test author")
-    UserEntry(name = "test author 2")
-}
 
 @Composable
+@Preview(showBackground = true)
 fun StoryScreen() {
-    StoryEntry(Story(title = "title 1", author = "test author",
-        body = "this is the content of a story"))
-    StoryEntry(Story(title = "title 2", author = "test author",
-        body = "this is the content of a story"))
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        //verticalArrangement = Arrangement.Top,
+        //horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        StoryEntry(
+            Story(
+                title = "title 1", author = "test author",
+                body = "this is the content of a story"
+            )
+        )
+        StoryEntry(
+            Story(
+                title = "title 2", author = "test author",
+                body = "this is the content of a story"
+            )
+        )
+    }
 }
 
 @Composable
@@ -108,14 +111,3 @@ fun StoryEntry(content: Story) {
     }
 }
 
-@Composable
-fun UserEntry(name: String) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-            .border(BorderStroke(1.dp, Color.Black))
-    ) {
-        Text(
-            text = name
-        )
-    }
-}
