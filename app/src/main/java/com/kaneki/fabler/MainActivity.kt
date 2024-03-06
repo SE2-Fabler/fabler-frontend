@@ -61,7 +61,7 @@ fun GreetingPreview() {
 fun MainContent() {
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column() {
-            Greeting("Android")
+            GreetingPreview()
         }
     }
 }
