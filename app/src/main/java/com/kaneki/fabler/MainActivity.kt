@@ -34,36 +34,15 @@ class MainActivity : ComponentActivity() {
 
                     Header()
 
-                    var selectedString by remember { mutableStateOf("日本語") }
-
                     TabbedCard(listOf(
-                        CardTab("日本語") {
-                            Text(
-                                text = "こんにちは、世界！",
-                                color = Color.DarkGray,
-                                fontSize = 18.sp,
-                                modifier = Modifier.padding(15.dp)
-                            )
+                        CardTab("Creations") {
+                            CreationScreen()
                         },
-                        CardTab("Deutsch") {
-                            Text(
-                                text = "Guten Morgen！",
-                                color = Color.DarkGray,
-                                fontSize = 18.sp,
-                                modifier = Modifier.padding(15.dp)
-                            )
-                        },
-                        CardTab("English", enabled = false) {
-                            Text(
-                                text = "Hello, World！",
-                                color = Color.DarkGray,
-                                fontSize = 18.sp,
-                                modifier = Modifier.padding(15.dp)
-                            )
+                        CardTab("Bookmarks") {
+                            BookmarkScreen()
                         },
                     )
-                    ) { tab, _ ->
-                        selectedString = tab.title
+                    ) { _, _ ->
                     }
                 }
 

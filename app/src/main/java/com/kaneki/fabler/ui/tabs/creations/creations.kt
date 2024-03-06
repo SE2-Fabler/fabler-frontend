@@ -44,7 +44,6 @@ val creationList = listOf(
     Creation(7, "Creation 7", R.drawable.bg7),
     Creation(8, "Creation 8", R.drawable.bg8),
     Creation(9, "Creation 9", R.drawable.bg9),
-//    Creation(10, "Creation 10", R.drawable.creation10)
 )
 
 @OptIn(ExperimentalFoundationApi::class)
