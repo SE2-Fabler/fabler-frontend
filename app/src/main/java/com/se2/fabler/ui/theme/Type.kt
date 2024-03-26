@@ -1,4 +1,4 @@
-package com.kaneki.fabler.ui.theme
+package com.se2.fabler.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

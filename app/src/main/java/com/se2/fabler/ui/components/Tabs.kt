@@ -1,4 +1,4 @@
-package com.kaneki.fabler.ui.components
+package com.se2.fabler.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

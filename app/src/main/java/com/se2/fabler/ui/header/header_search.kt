@@ -1,4 +1,4 @@
-package com.kaneki.fabler.ui.header
+package com.se2.fabler.ui.header
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -14,8 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import com.kaneki.fabler.R
+import com.se2.fabler.R
 
 
 @Preview

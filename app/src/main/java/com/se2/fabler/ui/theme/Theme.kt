@@ -1,4 +1,4 @@
-package com.kaneki.fabler.ui.theme
+package com.se2.fabler.ui.theme
 
 import android.app.Activity
 import android.os.Build

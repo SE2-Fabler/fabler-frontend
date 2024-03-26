@@ -1,4 +1,4 @@
-package com.kaneki.fabler
+package com.se2.fabler
 
 import org.junit.Test
 

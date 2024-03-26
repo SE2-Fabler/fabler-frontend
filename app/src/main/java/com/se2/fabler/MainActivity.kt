@@ -1,4 +1,4 @@
-package com.kaneki.fabler
+package com.se2.fabler
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,16 +8,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.kaneki.fabler.ui.components.CardTab
-import com.kaneki.fabler.ui.components.TabbedCard
-import com.kaneki.fabler.ui.header.Header
-import com.kaneki.fabler.ui.header.SearchHeader
-import com.kaneki.fabler.ui.theme.FablerTheme
+import com.se2.fabler.ui.components.CardTab
+import com.se2.fabler.ui.components.TabbedCard
+import com.se2.fabler.ui.header.Header
+import com.se2.fabler.ui.header.SearchHeader
+import com.se2.fabler.ui.theme.FablerTheme
 
-import com.kaneki.fabler.ui.tabs.creations.CreationScreen
-import com.kaneki.fabler.ui.tabs.bookmarks.BookmarkScreen
-import com.kaneki.fabler.ui.tabs.story.StoryScreen
-import com.kaneki.fabler.ui.tabs.user.UserScreen
+import com.se2.fabler.ui.tabs.creations.CreationScreen
+import com.se2.fabler.ui.tabs.bookmarks.BookmarkScreen
+import com.se2.fabler.ui.tabs.story.StoryScreen
+import com.se2.fabler.ui.tabs.user.UserScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
