@@ -1,98 +1,27 @@
 package com.se2.fabler.ui.tabs.bookmarks
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.se2.fabler.R
+import com.se2.fabler.ui.tabs.Creation
+import com.se2.fabler.ui.tabs.DrawBookCase
 
-data class Creation(val id: Int, val title: String, val imageResId: Int)
-
-// List of sample creations
-val creationList = listOf(
-    Creation(2, "Creation 2", R.drawable.bg2),
-    Creation(3, "Creation 3", R.drawable.bg3),
-    Creation(5, "Creation 5", R.drawable.bg5),
-    Creation(7, "Creation 7", R.drawable.bg7),
-    Creation(8, "Creation 8", R.drawable.bg8),
+var bookmarkList = listOf(
+    Creation(1, "Title 1", R.drawable.bg1, true),
+    Creation(2, "Title 2", R.drawable.bg2, true),
+    Creation(3, "Title 3", R.drawable.bg3, true),
+    Creation(4, "Title 4", R.drawable.bg4, true),
 )
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BookmarkScreen() {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        modifier = Modifier.fillMaxSize()
-    ) {
-        items(creationList.size) { index ->
-            CreationCard(creation = creationList[index])
-        }
-    }
-}
-
-@Composable
-fun CreationCard(creation: Creation) {
-    Card(
-        modifier = Modifier
-            .padding(8.dp)
-            .aspectRatio(2f / 3f)
-            .background(Color.Transparent)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Transparent)
-        ) {
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize()
-                    .background(Color.Transparent)
-            ) {
-                Image(
-                    painter = painterResource(id = creation.imageResId),
-                    contentDescription = "Creation Image",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .aspectRatio(2f / 3f),
-                    contentScale = ContentScale.Crop // Scale the image to fill the available space
-                )
-            }
-            Spacer(modifier = Modifier.height(16.dp)) // Add space between image and text
-            Text(
-                text = creation.title,
-                style = MaterialTheme.typography.titleSmall,
-                color = Color.Black,
-                modifier = Modifier
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                    .fillMaxWidth()
-            )
-        }
-    }
+    DrawBookCase(bookmarkList)
 }
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewCreationGrid() {
+fun PreviewBookmarkGrid() {
     MaterialTheme {
         BookmarkScreen()
     }
