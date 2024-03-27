@@ -1,4 +1,4 @@
-package com.se2.fabler.ui.tabs.story
+package com.se2.fabler.ui.views
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn

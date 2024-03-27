@@ -1,4 +1,4 @@
-package com.se2.fabler.ui.tabs.user
+package com.se2.fabler.ui.views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

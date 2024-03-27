@@ -8,15 +8,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.se2.fabler.ui.components.CardTab
-import com.se2.fabler.ui.components.ToggleComponent
-import com.se2.fabler.ui.header.Header
-import com.se2.fabler.ui.header.SearchHeader
-import com.se2.fabler.ui.tabs.bookmarks.BookmarkScreen
-import com.se2.fabler.ui.tabs.creations.CreationScreen
-import com.se2.fabler.ui.tabs.story.StoryScreen
-import com.se2.fabler.ui.tabs.user.UserScreen
 import com.se2.fabler.ui.theme.FablerTheme
+import com.se2.fabler.ui.views.HomeScreen
+import com.se2.fabler.ui.views.SearchScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,30 +20,9 @@ class MainActivity : ComponentActivity() {
                 Column {
                     var isSearch by remember { mutableStateOf(false) }
                     if (!isSearch) {
-                        Header { isSearch = true }
-                        ToggleComponent(
-                            listOf(
-                                CardTab("NOVELS") {
-                                    CreationScreen()
-                                },
-                                CardTab("BOOKMARKS") {
-                                    BookmarkScreen()
-                                },
-                            )
-                        )
-                        //ToggleComponent(text1 = "NOVELS", text2 = "BOOKMARKS")
+                        HomeScreen { isSearch = true }
                     } else {
-                        SearchHeader { isSearch = false }
-                        ToggleComponent(
-                            listOf(
-                                CardTab("Users") {
-                                    UserScreen()
-                                },
-                                CardTab("Stories") {
-                                    StoryScreen()
-                                },
-                            )
-                        )
+                        SearchScreen { isSearch = false }
                     }
                 }
             }
