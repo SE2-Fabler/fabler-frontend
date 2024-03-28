@@ -35,10 +35,10 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.se2.fabler.R
 import com.se2.fabler.models.TabData
+import com.se2.fabler.ui.theme.AppColors.Companion.PRIMARY_FONT_COLOR
+import com.se2.fabler.ui.theme.AppColors.Companion.PRIMARY_COLOR
+import com.se2.fabler.ui.theme.AppColors.Companion.SECONDARY_COLOR
 
-private val TAB_PRIMARY_COLOR = Color(0xfff2ece5)
-private val TAB_SECONDARY_COLOR = Color(0xffffffff)
-private val TAB_FONT_COLOR = Color(0xff87521d)
 
 @Composable
 fun CustomTabStrip(
@@ -93,10 +93,10 @@ fun CustomTabStrip(
                         defaultElevation = 5.dp
                     ),
                     colors = CardColors(
-                        TAB_SECONDARY_COLOR,
-                        TAB_SECONDARY_COLOR,
-                        TAB_SECONDARY_COLOR,
-                        TAB_SECONDARY_COLOR
+                        SECONDARY_COLOR,
+                        SECONDARY_COLOR,
+                        SECONDARY_COLOR,
+                        SECONDARY_COLOR
                     ),
                     shape = RoundedCornerShape(20.dp)
                 ) {
@@ -112,7 +112,7 @@ fun CustomTabStrip(
                                 text = {
                                     Text(
                                         cardTab.title,
-                                        color = TAB_FONT_COLOR,
+                                        color = PRIMARY_FONT_COLOR,
                                         // FIXME: No magic numbers!
                                         fontWeight = FontWeight(if (selectedTab == index) 700 else 400),
                                         fontSize = TextUnit(16.5f, TextUnitType.Sp)
@@ -126,7 +126,7 @@ fun CustomTabStrip(
                                 },
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(18.dp))
-                                    .background(if (selectedTab == index) TAB_PRIMARY_COLOR else TAB_SECONDARY_COLOR)
+                                    .background(if (selectedTab == index) PRIMARY_COLOR else SECONDARY_COLOR)
                                     .fillMaxWidth(scale)
                             )
                         }

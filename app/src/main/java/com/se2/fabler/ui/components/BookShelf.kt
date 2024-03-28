@@ -42,10 +42,10 @@ val SHELF_WOOD_HEIGHT = 25f.dp
 val SHELF_WOOD_PADDING = 10f.dp
 
 private var sampleBookData = listOf(
-    BookData(1, "Title 1", R.drawable.bg1, true),
-    BookData(2, "Title 2", R.drawable.bg2, true),
-    BookData(3, "Title 3", R.drawable.bg3, true),
-    BookData(4, "Title 4", R.drawable.bg4, true),
+    BookData(1, "Title 1", R.drawable.bg1, "Author 1", "Genre 1", "Description 1", 4, true),
+    BookData(2, "Title 2", R.drawable.bg2, "Author 2", "Genre 2", "Description 2", 4, true),
+    BookData(3, "Title 3", R.drawable.bg3, "Author 3", "Genre 3", "Description 3", 4, true),
+    BookData(4, "Title 4", R.drawable.bg4, "Author 4", "Genre 4", "Description 4", 4, true),
 )
 
 @Preview(showBackground = true)
@@ -75,7 +75,7 @@ fun drawScaledBitmap(
 }
 
 @Composable
-private fun DrawHorizontalShelf() {
+fun DrawHorizontalShelf() {
     Column(Modifier.padding(0.dp, SHELF_HEIGHT - SHELF_WOOD_HEIGHT, 0.dp, 0.dp)) {
         val shelfLeftImg = ImageBitmap.imageResource(R.drawable.shelf_left)
         val shelfRightImg = ImageBitmap.imageResource(R.drawable.shelf_right)
@@ -120,7 +120,7 @@ private fun DrawHorizontalShelf() {
 }
 
 @Composable
-private fun DrawBook(creation: BookData) {
+fun DrawBook(creation: BookData) {
     val creationCover = ImageBitmap.imageResource(creation.imageResId)
     val bookCover = ImageBitmap.imageResource(R.drawable.book_case)
     ElevatedCard(

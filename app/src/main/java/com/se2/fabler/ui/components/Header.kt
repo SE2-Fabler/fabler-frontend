@@ -20,31 +20,31 @@ import com.se2.fabler.R
 
 @Composable
 fun Header(onSearchToggle: () -> Unit) {
-    Surface(Modifier.fillMaxWidth()) {
+    Surface(Modifier.fillMaxWidth().background(Color.Transparent)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .background(Color.White)
+                .background(Color.Transparent)
                 .padding(0.dp, 10.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.baseline_search_36),
-                contentDescription = "Search",
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clickable(onClick = onSearchToggle)
+                painter = painterResource(id = R.drawable.round_face_36),
+                contentDescription = "User Profile",
+                modifier = Modifier.padding(20.dp, 0.dp, 0.dp, 0.dp)
             )
             Spacer(Modifier.weight(1f))
             Image(
-                modifier = Modifier.size(200.dp, 50.dp),
+                modifier = Modifier.size(200.dp, 60.dp),
                 painter = painterResource(id = R.drawable.logo_header),
                 contentDescription = "Header Logo: Fabler"
             )
             Spacer(Modifier.weight(1f))
             Image(
-                painter = painterResource(id = R.drawable.round_face_36),
-                contentDescription = "User Profile",
-                modifier = Modifier.padding(10.dp)
+                painter = painterResource(id = R.drawable.baseline_search_36),
+                contentDescription = "Search",
+                modifier = Modifier
+                    .padding(0.dp, 0.dp, 20.dp, 5.dp)
+                    .clickable(onClick = onSearchToggle)
             )
         }
     }
