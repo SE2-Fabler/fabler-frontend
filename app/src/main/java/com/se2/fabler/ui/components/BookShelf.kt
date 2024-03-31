@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,10 +43,10 @@ val SHELF_WOOD_HEIGHT = 25f.dp
 val SHELF_WOOD_PADDING = 10f.dp
 
 private var sampleBookData = listOf(
-    BookData(1, "Title 1", R.drawable.bg1, "Author 1", "Genre 1", "Description 1", 4, true),
-    BookData(2, "Title 2", R.drawable.bg2, "Author 2", "Genre 2", "Description 2", 4, true),
-    BookData(3, "Title 3", R.drawable.bg3, "Author 3", "Genre 3", "Description 3", 4, true),
-    BookData(4, "Title 4", R.drawable.bg4, "Author 4", "Genre 4", "Description 4", 4, true),
+    BookData(1, "Title 1", R.drawable.bg1, "Author 1", "Genre 1", "Description 1", true, 4, true),
+    BookData(2, "Title 2", R.drawable.bg2, "Author 2", "Genre 2", "Description 2", false, 4, true),
+    BookData(3, "Title 3", R.drawable.bg3, "Author 3", "Genre 3", "Description 3", true, 4, true),
+    BookData(4, "Title 4", R.drawable.bg4, "Author 4", "Genre 4", "Description 4", false, 4, true),
 )
 
 @Preview(showBackground = true)
@@ -144,37 +145,41 @@ fun DrawBook(creation: BookData) {
                 Canvas(
                     modifier = Modifier.fillMaxSize()
                 ) {
+                    drawRect(Color.White, blendMode = BlendMode.Clear)
                     val creationHeightScale = size.height / creationCover.height
-                    Bitmap.createScaledBitmap(
-                        creationCover.asAndroidBitmap(),
-                        (creationCover.width * creationHeightScale).toInt(),
-                        (creationCover.height * creationHeightScale).toInt(),
-                        false
-                    ).let {
-                        drawImage(
-                            it.asImageBitmap(),
-                            topLeft = Offset(0.0f, 0.0f),
-                        )
-                    }
-
-                    val bookHeightScale = size.height / bookCover.height
-                    Bitmap.createScaledBitmap(
-                        bookCover.asAndroidBitmap(),
-                        (bookCover.width * bookHeightScale).toInt(),
-                        (bookCover.height * bookHeightScale).toInt(),
-                        false
-                    ).let {
-                        drawImage(
-                            it.asImageBitmap(),
-                            topLeft = Offset(0.0f, 0.0f),
-                            blendMode = BlendMode.Hardlight,
-                            alpha = 0.4f
-                        )
-                    }
-                }
-            }
-        }
-    }
+                    with(drawContext.canvas.nativeCanvas) {
+                        val checkPoint = saveLayer(null, null)
+                        Bitmap.createScaledBitmap(
+                            creationCover.asAndroidBitmap(),
+                            (creationCover.width * creationHeightScale).toInt(),
+                            (creationCover.height * creationHeightScale).toInt(),
+                            false
+                        ).let {
+                            drawImage(
+                                it.asImageBitmap(),
+                                topLeft = Offset(0.0f, 0.0f),
+                            )
+                        }
+                        val bookHeightScale = size.height / bookCover.height
+                        Bitmap.createScaledBitmap(
+                            bookCover.asAndroidBitmap(),
+                            (bookCover.width * bookHeightScale).toInt(),
+                            (bookCover.height * bookHeightScale).toInt(),
+                            false
+                        ).let {
+                            drawImage(
+                                it.asImageBitmap(),
+                                topLeft = Offset(0.0f, 0.0f),
+                                blendMode = BlendMode.Hardlight,
+                                alpha = 0.4f
+                            )
+                        }
+                        restoreToCount(checkPoint)
+                    } // End native canvas
+                } // End Canvas
+            } // End Box
+        } // End Column
+    } // End ElevatedCard
 }
 
 @Composable

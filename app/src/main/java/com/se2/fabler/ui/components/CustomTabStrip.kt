@@ -6,13 +6,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -21,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -28,6 +33,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -35,10 +41,9 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.se2.fabler.R
 import com.se2.fabler.models.TabData
-import com.se2.fabler.ui.theme.AppColors.Companion.PRIMARY_FONT_COLOR
 import com.se2.fabler.ui.theme.AppColors.Companion.PRIMARY_COLOR
+import com.se2.fabler.ui.theme.AppColors.Companion.PRIMARY_FONT_COLOR
 import com.se2.fabler.ui.theme.AppColors.Companion.SECONDARY_COLOR
-
 
 @Composable
 fun CustomTabStrip(
@@ -109,15 +114,6 @@ fun CustomTabStrip(
                         tabs.forEachIndexed { index, cardTab ->
                             val scale = 1f / (tabs.size - index)
                             Tab(
-                                text = {
-                                    Text(
-                                        cardTab.title,
-                                        color = PRIMARY_FONT_COLOR,
-                                        // FIXME: No magic numbers!
-                                        fontWeight = FontWeight(if (selectedTab == index) 700 else 400),
-                                        fontSize = TextUnit(16.5f, TextUnitType.Sp)
-                                    )
-                                },
                                 selected = (selectedTab == index),
                                 onClick = {
                                     selectedTab = index
@@ -127,8 +123,26 @@ fun CustomTabStrip(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(18.dp))
                                     .background(if (selectedTab == index) PRIMARY_COLOR else SECONDARY_COLOR)
-                                    .fillMaxWidth(scale)
-                            )
+                                    .fillMaxWidth(scale),
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.padding(0.dp, 8.dp, 0.dp, 8.dp)) { // Set the padding of the row
+                                    Icon(
+                                        painterResource(id = cardTab.icon),
+                                        contentDescription = "Icon",
+                                        tint = PRIMARY_FONT_COLOR,
+                                        modifier = Modifier.size(36.dp).padding(0.dp, 4.dp, 0.dp, 4.dp) // Set the size of the icon
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        cardTab.title,
+                                        color = PRIMARY_FONT_COLOR,
+                                        // FIXME: No magic numbers!
+                                        fontWeight = FontWeight(if (selectedTab == index) 700 else 400),
+                                        fontSize = TextUnit(16.5f, TextUnitType.Sp)
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -165,11 +179,11 @@ fun CustomTabStrip(
 private fun PreviewToggleComponent() {
     MaterialTheme {
         Column(Modifier.height(200.dp)) {
-            CustomTabStrip(listOf(TabData("Tab 1") {
+            CustomTabStrip(listOf(TabData("Tab 1", icon = R.drawable.baseline_menu_book_36) {
                 Text("Tab 1 content")
-            }, TabData("Tab 2") {
+            }, TabData("Tab 2", icon = R.drawable.baseline_bookmark_48) {
                 Text("Tab 2 content")
-            }, TabData("Tab 3") {
+            }, TabData("Tab 3", icon = R.drawable.baseline_send_36) {
                 Text("Tab 3 content")
             })) { _, _ -> }
         }

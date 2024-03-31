@@ -7,6 +7,7 @@ data class BookData(
     val author: String,
     val genre: String,
     val description: String,
+    val private: Boolean,
     val bookmarks: Int,
     val bookmarked: Boolean,
 )

@@ -30,7 +30,9 @@ fun Header(onSearchToggle: () -> Unit) {
             Image(
                 painter = painterResource(id = R.drawable.round_face_36),
                 contentDescription = "User Profile",
-                modifier = Modifier.padding(20.dp, 0.dp, 0.dp, 0.dp)
+                modifier = Modifier
+                    .padding(20.dp, 0.dp, 0.dp, 0.dp)
+                    .clickable(onClick = {})
             )
             Spacer(Modifier.weight(1f))
             Image(

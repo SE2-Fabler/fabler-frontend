@@ -47,30 +47,30 @@ import com.se2.fabler.ui.components.DrawBook
 import com.se2.fabler.ui.components.SHELF_WOOD_HEIGHT
 import com.se2.fabler.ui.components.SHELF_WOOD_PADDING
 import com.se2.fabler.ui.components.drawScaledBitmap
-import com.se2.fabler.ui.theme.AppColors.Companion.SCREEN_BACKGROUND_COLOR
-import com.se2.fabler.ui.theme.AppColors.Companion.PRIMARY_FONT_COLOR
 import com.se2.fabler.ui.theme.AppColors.Companion.PRIMARY_COLOR
+import com.se2.fabler.ui.theme.AppColors.Companion.PRIMARY_FONT_COLOR
+import com.se2.fabler.ui.theme.AppColors.Companion.SCREEN_BACKGROUND_COLOR
 
 private var sampleSearchBookData = listOf(
     BookData(
         1, "Fortune Killer", R.drawable.bg1, "demigod3ss", "Horror",
         "Jaxen’s got a secret past that threatens to bring down the school’s whole social order – and much more.",
-        4, true
+        true, 4, true
     ),
-    BookData(2, "Title 2", R.drawable.bg2, "Author 2", "Genre 2", "Description 2", 4, true),
-    BookData(3, "Title 3", R.drawable.bg3, "Author 3", "Genre 3", "Description 3", 4, false),
-    BookData(4, "Title 4", R.drawable.bg4, "Author 4", "Genre 4", "Description 4", 4, true),
-    BookData(5, "Title 5", R.drawable.bg5, "Author 5", "Genre 5", "Description 5", 4, false),
-    BookData(6, "Title 6", R.drawable.bg6, "Author 6", "Genre 6", "Description 6", 4, true),
-    BookData(7, "Title 7", R.drawable.bg7, "Author 7", "Genre 7", "Description 7", 4, false),
-    BookData(8, "Title 8", R.drawable.bg8, "Author 8", "Genre 8", "Description 8", 4, true),
-    BookData(9, "Title 9", R.drawable.bg9, "Author 9", "Genre 9", "Description 9", 4, false),
-    BookData(10, "Title 10", R.drawable.bg1, "Author 10", "Genre 10", "Description 10", 4, true),
-    BookData(11, "Title 11", R.drawable.bg2, "Author 11", "Genre 11", "Description 11", 4, false),
-    BookData(12, "Title 12", R.drawable.bg3, "Author 12", "Genre 12", "Description 12", 4, true),
-    BookData(13, "Title 13", R.drawable.bg4, "Author 13", "Genre 13", "Description 13", 4, false),
-    BookData(14, "Title 14", R.drawable.bg5, "Author 14", "Genre 14", "Description 14", 4, true),
-    BookData(15, "Title 15", R.drawable.bg6, "Author 15", "Genre 15", "Description 15", 4, false),
+    BookData(2, "Title 2", R.drawable.bg2, "Author 2", "Genre 2", "Description 2", false, 4, true),
+    BookData(3, "Title 3", R.drawable.bg3, "Author 3", "Genre 3", "Description 3", true, 4, false),
+    BookData(4, "Title 4", R.drawable.bg4, "Author 4", "Genre 4", "Description 4", false, 4, true),
+    BookData(5, "Title 5", R.drawable.bg5, "Author 5", "Genre 5", "Description 5", true, 4, false),
+    BookData(6, "Title 6", R.drawable.bg6, "Author 6", "Genre 6", "Description 6", false, 4, true),
+    BookData(7, "Title 7", R.drawable.bg7, "Author 7", "Genre 7", "Description 7", true, 4, false),
+    BookData(8, "Title 8", R.drawable.bg8, "Author 8", "Genre 8", "Description 8", false, 4, true),
+    BookData(9, "Title 9", R.drawable.bg9, "Author 9", "Genre 9", "Description 9", true, 4, false),
+    BookData(10, "Title 10", R.drawable.bg1, "Author 10", "Genre 10", "Description 10", false, 4, true),
+    BookData(11, "Title 11", R.drawable.bg2, "Author 11", "Genre 11", "Description 11", true, 4, false),
+    BookData(12, "Title 12", R.drawable.bg3, "Author 12", "Genre 12", "Description 12", false, 4, true),
+    BookData(13, "Title 13", R.drawable.bg4, "Author 13", "Genre 13", "Description 13", true, 4, false),
+    BookData(14, "Title 14", R.drawable.bg5, "Author 14", "Genre 14", "Description 14", false, 4, true),
+    BookData(15, "Title 15", R.drawable.bg6, "Author 15", "Genre 15", "Description 15", true, 4, false),
 )
 
 @Composable
@@ -260,6 +260,6 @@ fun SearchBookShelf(bookSplit: List<BookData>) {
 
 @Composable
 @Preview(showBackground = true)
-fun StoryScreen() {
+fun SearchBook() {
     SearchBookShelf(sampleSearchBookData)
 }
