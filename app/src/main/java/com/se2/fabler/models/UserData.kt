@@ -8,8 +8,6 @@ data class UserData(
     val profileImageResId: Int,
     val followerCount: Int,
     val followingCount: Int,
-    val stories: List<BookData>,
-    val bookmarks: List<BookData>,
     val bookmarkPrivacy: Boolean,
     val about: String,
     val location: String,

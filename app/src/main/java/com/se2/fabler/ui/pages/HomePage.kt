@@ -9,6 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.se2.fabler.AppModel
 import com.se2.fabler.R
+import com.se2.fabler.getTestAppModel
 import com.se2.fabler.models.TabData
 import com.se2.fabler.ui.components.CustomTabStrip
 import com.se2.fabler.ui.components.Header
@@ -21,10 +22,10 @@ fun HomePage(app: AppModel) {
             CustomTabStrip(
                 listOf(
                     TabData("NOVELS", R.drawable.baseline_menu_book_36) {
-                        BookShelfView(app.getUserCreations(app.currentUserId))
+                        BookShelfView(app.loggedInUserData.stories)
                     },
                     TabData("BOOKMARKS", R.drawable.baseline_bookmark_48) {
-                        BookShelfView(app.getUserBookmarks(app.currentUserId))
+                        BookShelfView(app.loggedInUserData.bookmarks)
                     },
                 )
             )
@@ -32,7 +33,8 @@ fun HomePage(app: AppModel) {
         Header({
             app.pushView("SearchPage")
         }, {
-            app.popView()
+            app.userToDisplayId = app.loggedInUserData.user.id
+            app.pushView("ProfilePage")
         })
     }
 }
@@ -40,5 +42,5 @@ fun HomePage(app: AppModel) {
 @Composable
 @Preview(showBackground = true)
 private fun PreviewHomePage() {
-    Column { HomePage(AppModel()) }
+    Column { HomePage(getTestAppModel()) }
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -66,6 +67,7 @@ fun UserListView(lazyUserData: LazyPagingItems<UserData>, onSelectUser: (UserDat
         GridCells.Fixed(1),
         modifier = Modifier
             .background(SCREEN_BACKGROUND_COLOR)
+            .fillMaxHeight()
     ) {
         item {
             Spacer(modifier = Modifier.height(15.dp))

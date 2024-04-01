@@ -1,13 +1,17 @@
 package com.se2.fabler
 
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.se2.fabler.api.FablerRepository
 import com.se2.fabler.api.FablerService
-import com.se2.fabler.models.BookData
-import com.se2.fabler.models.UserData
+import com.se2.fabler.models.UserDataAll
 
-class AppModel {
+class AppModel(
+    // User data to display for ProfilePage
+    var userToDisplayId: Int,
+    // Logged in user's data
+    // FIXME: Currently there's no way to refresh this!
+    var loggedInUserData: UserDataAll
+) {
     /* ===------------------------------------------------------------------------------------=== */
     // Navigation stack implementation
     /* ===------------------------------------------------------------------------------------=== */
@@ -40,24 +44,9 @@ class AppModel {
     }
 
     /* ===------------------------------------------------------------------------------------=== */
-    // Data source adapters and whatnot
+    // Fabler API service and data repository adapter
     /* ===------------------------------------------------------------------------------------=== */
 
-    private val dataSource: TestDataSource = TestDataSource()
-    private val service: FablerService = FablerService()
+    val service: FablerService = FablerService()
     val repository: FablerRepository = FablerRepository(service)
-    private val currentUserIdMut = mutableIntStateOf(-1)
-    val currentUserId: Int get() = currentUserIdMut.value
-
-    fun getUserCreations(userId: Int): List<BookData> {
-        return dataSource.books // Returns the same list no matter what...
-    }
-
-    fun getUserBookmarks(userId: Int): List<BookData> {
-        return dataSource.books // Returns the same list no matter what...
-    }
-
-    fun getUserProfile(userId: Int): UserData {
-        return dataSource.userdata
-    }
 }

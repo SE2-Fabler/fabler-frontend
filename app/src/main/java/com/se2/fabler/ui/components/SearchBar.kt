@@ -28,7 +28,7 @@ import com.se2.fabler.ui.theme.AppColors.Companion.PRIMARY_FONT_COLOR
 import com.se2.fabler.ui.theme.AppColors.Companion.SECONDARY_COLOR
 
 @Composable
-fun SearchBar(onSearchClick: () -> Unit, onBackClick: () -> Unit) {
+fun SearchBar(onSearchClick: (String) -> Unit, onBackClick: () -> Unit) {
     Surface(modifier = Modifier.background(SECONDARY_COLOR)) {
         var text by rememberSaveable { mutableStateOf("") }
         Row(
@@ -59,7 +59,7 @@ fun SearchBar(onSearchClick: () -> Unit, onBackClick: () -> Unit) {
                     painter = painterResource(id = R.drawable.baseline_search_36),
                     contentDescription = "Search",
                     modifier = Modifier.padding(10.dp)
-                        .clickable(onClick = onSearchClick)
+                        .clickable(onClick = { onSearchClick(text) })
                 )
             }, modifier = Modifier
                     .fillMaxWidth()

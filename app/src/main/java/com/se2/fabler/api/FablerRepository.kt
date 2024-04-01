@@ -14,14 +14,16 @@ import com.se2.fabler.models.UserData
 import kotlinx.coroutines.flow.Flow
 import java.io.IOException
 
-private const val NETWORK_PAGE_SIZE = 50
+// FIXME: Change this, this is just for testing!
+private const val PAGE_SIZE_BOOK = 3
+private const val PAGE_SIZE_USER = 3
 
 class FablerRepository(private val service: FablerService) {
     fun getBookSearchResultStream(query: String): Flow<PagingData<BookData>> {
         Log.d("FablerRepository", "New book query: $query")
         return Pager(
             config = PagingConfig(
-                pageSize = NETWORK_PAGE_SIZE,
+                pageSize = PAGE_SIZE_BOOK,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { BookSearchPagingSource(service, query) }
@@ -32,7 +34,7 @@ class FablerRepository(private val service: FablerService) {
         Log.d("FablerRepository", "New user query: $query")
         return Pager(
             config = PagingConfig(
-                pageSize = NETWORK_PAGE_SIZE,
+                pageSize = PAGE_SIZE_USER,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { UserSearchPagingSource(service, query) }
@@ -58,7 +60,7 @@ class BookSearchPagingSource(private val service: FablerService, private val que
             val nextKey = if (response.isEmpty()) {
                 null
             } else {
-                position + params.loadSize / NETWORK_PAGE_SIZE
+                position + params.loadSize / PAGE_SIZE_BOOK
             }
             LoadResult.Page(
                 data = response,
@@ -90,7 +92,7 @@ class UserSearchPagingSource(private val service: FablerService, private val que
             val nextKey = if (response.isEmpty()) {
                 null
             } else {
-                position + params.loadSize / NETWORK_PAGE_SIZE
+                position + params.loadSize / PAGE_SIZE_USER
             }
             LoadResult.Page(
                 data = response,

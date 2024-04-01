@@ -8,6 +8,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.se2.fabler.AppModel
 import com.se2.fabler.R
+import com.se2.fabler.getTestAppModel
 import com.se2.fabler.models.TabData
 import com.se2.fabler.ui.components.CustomTabStrip
 import com.se2.fabler.ui.components.ProfileHeader
@@ -16,14 +17,21 @@ import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun ProfilePage(app: AppModel) {
-    val user = app.getUserProfile(0)
-    val stories = app.getUserCreations(0)
-    val bookmarks = app.getUserBookmarks(0)
-    val lazyStories = flowOf(PagingData.from(stories)).collectAsLazyPagingItems()
-    val lazyBookmarks = flowOf(PagingData.from(bookmarks)).collectAsLazyPagingItems()
+    val isCurrentUser = app.userToDisplayId == app.loggedInUserData.user.id
+    val allUserData = if (isCurrentUser) {
+        app.loggedInUserData
+    } else {
+        app.service.getUserDataAll(app.userToDisplayId)
+    }
+    val lazyStories = flowOf(PagingData.from(allUserData.stories)).collectAsLazyPagingItems()
+    val lazyBookmarks = flowOf(PagingData.from(allUserData.bookmarks)).collectAsLazyPagingItems()
     Box {
         Column {
-            ProfileHeader(user)
+            ProfileHeader(allUserData.user, isCurrentUser, {
+                app.popView()
+            }, {
+                // TODO: Implement settings page
+            })
             Box {
                 CustomTabStrip(
                     listOf(
@@ -38,11 +46,10 @@ fun ProfilePage(app: AppModel) {
             }
         }
     }
-
 }
 
 @Composable
 @Preview(showBackground = true)
 private fun PreviewProfilePage() {
-    ProfilePage(AppModel())
+    ProfilePage(getTestAppModel())
 }
