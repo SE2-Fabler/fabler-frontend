@@ -13,6 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -33,7 +37,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -128,10 +131,12 @@ fun CustomTabStrip(
                                 Row(verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier.padding(0.dp, 8.dp, 0.dp, 8.dp)) { // Set the padding of the row
                                     Icon(
-                                        painterResource(id = cardTab.icon),
+                                        imageVector = cardTab.icon,
                                         contentDescription = "Icon",
                                         tint = PRIMARY_FONT_COLOR,
-                                        modifier = Modifier.size(36.dp).padding(0.dp, 4.dp, 0.dp, 4.dp) // Set the size of the icon
+                                        modifier = Modifier
+                                            .size(36.dp)
+                                            .padding(0.dp, 4.dp, 0.dp, 4.dp) // Set the size of the icon
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
@@ -179,11 +184,11 @@ fun CustomTabStrip(
 private fun PreviewToggleComponent() {
     MaterialTheme {
         Column(Modifier.height(200.dp)) {
-            CustomTabStrip(listOf(TabData("Tab 1", icon = R.drawable.baseline_menu_book_36) {
+            CustomTabStrip(listOf(TabData("Tab 1", icon = Icons.AutoMirrored.Filled.MenuBook) {
                 Text("Tab 1 content")
-            }, TabData("Tab 2", icon = R.drawable.baseline_bookmark_48) {
+            }, TabData("Tab 2", Icons.Default.Bookmark) {
                 Text("Tab 2 content")
-            }, TabData("Tab 3", icon = R.drawable.baseline_send_36) {
+            }, TabData("Tab 3", icon = Icons.AutoMirrored.Filled.Send) {
                 Text("Tab 3 content")
             })) { _, _ -> }
         }

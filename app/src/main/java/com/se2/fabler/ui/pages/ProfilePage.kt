@@ -2,12 +2,14 @@ package com.se2.fabler.ui.pages
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.outlined.Bookmarks
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.se2.fabler.AppModel
-import com.se2.fabler.R
 import com.se2.fabler.getTestAppModel
 import com.se2.fabler.models.TabData
 import com.se2.fabler.ui.components.CustomTabStrip
@@ -35,10 +37,10 @@ fun ProfilePage(app: AppModel) {
             Box {
                 CustomTabStrip(
                     listOf(
-                        TabData("CREATIONS", R.drawable.baseline_menu_book_36) {
+                        TabData("CREATIONS", Icons.AutoMirrored.Filled.MenuBook) {
                             BookListView(lazyStories) {}
                         },
-                        TabData("BOOKMARKS", R.drawable.baseline_bookmark_48) {
+                        TabData("BOOKMARKS", Icons.Outlined.Bookmarks) {
                             BookListView(lazyBookmarks) {}
                         },
                     )

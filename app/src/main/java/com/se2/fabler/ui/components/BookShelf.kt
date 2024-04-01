@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.se2.fabler.R
 import com.se2.fabler.TestDataSource
@@ -70,14 +71,14 @@ fun drawScaledBitmap(
 }
 
 @Composable
-fun DrawHorizontalShelf() {
-    Column(Modifier.padding(0.dp, SHELF_HEIGHT - SHELF_WOOD_HEIGHT, 0.dp, 0.dp)) {
+fun DrawHorizontalShelf(scaleFactor: Float = 1.0f, topPadding: Dp = SHELF_HEIGHT - SHELF_WOOD_HEIGHT) {
+    Column(Modifier.padding(0.dp, topPadding, 0.dp, 0.dp)) {
         val shelfLeftImg = ImageBitmap.imageResource(R.drawable.shelf_left)
         val shelfRightImg = ImageBitmap.imageResource(R.drawable.shelf_right)
         val shelfMiddleImg = ImageBitmap.imageResource(R.drawable.shelf_middle)
         ElevatedCard(
             modifier = Modifier
-                .height(SHELF_WOOD_HEIGHT)
+                .height(SHELF_WOOD_HEIGHT*scaleFactor)
                 .fillMaxWidth()
                 .padding(
                     SHELF_WOOD_PADDING, 0.dp
@@ -90,12 +91,12 @@ fun DrawHorizontalShelf() {
         ) {
             Canvas(modifier = Modifier.fillMaxSize()) {
                 val shelfLoc = Offset.Zero
-                val shelfSize = Size(size.width, SHELF_WOOD_HEIGHT.toPx())
+                val shelfSize = Size(size.width, SHELF_WOOD_HEIGHT.toPx()*scaleFactor)
                 // Shelf left end
                 drawScaledBitmap(
                     this, shelfLeftImg,
                     Offset.Zero,
-                    Size(shelfLeftImg.width.toFloat(), SHELF_WOOD_HEIGHT.toPx())
+                    Size(shelfLeftImg.width.toFloat(), shelfSize.height)
                 )
                 // Shelf middle
                 drawScaledBitmap(
@@ -107,7 +108,7 @@ fun DrawHorizontalShelf() {
                 drawScaledBitmap(
                     this, shelfRightImg,
                     Offset(shelfSize.width - shelfRightImg.width - 1, 0f),
-                    Size(shelfRightImg.width.toFloat(), SHELF_WOOD_HEIGHT.toPx())
+                    Size(shelfRightImg.width.toFloat(), shelfSize.height)
                 )
             }
         }
