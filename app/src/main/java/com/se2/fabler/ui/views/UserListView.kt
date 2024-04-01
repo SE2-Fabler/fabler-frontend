@@ -15,6 +15,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material.icons.filled.PersonRemove
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -34,7 +37,6 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.se2.fabler.R
 import com.se2.fabler.TestDataSource
 import com.se2.fabler.models.UserData
 import com.se2.fabler.ui.components.SearchListButton
@@ -123,8 +125,8 @@ fun UserListView(lazyUserData: LazyPagingItems<UserData>, onSelectUser: (UserDat
                     SearchListButton(
                         "Follow",
                         "Following",
-                        R.drawable.baseline_person_add_36,
-                        R.drawable.baseline_person_remove_36,
+                        Icons.Default.PersonAdd,
+                        Icons.Default.PersonRemove,
                         user.following
                     )
                 }

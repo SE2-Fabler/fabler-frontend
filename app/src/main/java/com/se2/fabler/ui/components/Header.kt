@@ -8,6 +8,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,13 +29,13 @@ fun Header(onSearchClick: () -> Unit, onUserClick: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .background(Color.White)
-                .padding(0.dp, 10.dp)
+                .padding(15.dp, 10.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.round_face_36),
-                contentDescription = "User Profile",
-                modifier = Modifier
-                    .padding(20.dp, 0.dp, 0.dp, 0.dp)
+            Icon(
+                imageVector = Icons.Default.Face,
+                contentDescription = "Back",
+                tint = Color.DarkGray,
+                modifier = Modifier.size(36.dp)
                     .clickable(onClick = onUserClick)
             )
             Spacer(Modifier.weight(1f))
@@ -41,11 +45,11 @@ fun Header(onSearchClick: () -> Unit, onUserClick: () -> Unit) {
                 contentDescription = "Header Logo: Fabler"
             )
             Spacer(Modifier.weight(1f))
-            Image(
-                painter = painterResource(id = R.drawable.baseline_search_36),
+            Icon(
+                imageVector = Icons.Default.Search,
                 contentDescription = "Search",
-                modifier = Modifier
-                    .padding(0.dp, 0.dp, 20.dp, 5.dp)
+                tint = Color.DarkGray,
+                modifier = Modifier.size(36.dp)
                     .clickable(onClick = onSearchClick)
             )
         }

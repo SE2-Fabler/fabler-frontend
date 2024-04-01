@@ -3,6 +3,9 @@ package com.se2.fabler.ui.pages
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.filled.Diversity1
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -15,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.se2.fabler.AppModel
-import com.se2.fabler.R
 import com.se2.fabler.getTestAppModel
 import com.se2.fabler.models.BookData
 import com.se2.fabler.models.TabData
@@ -38,7 +40,7 @@ fun SearchPage(app: AppModel) {
         Box(Modifier.padding(0.dp, 65.dp, 0.dp, 0.dp)) {
             CustomTabStrip(
                 listOf(
-                    TabData("NOVELS", R.drawable.baseline_menu_book_36) {
+                    TabData("NOVELS", Icons.AutoMirrored.Filled.MenuBook) {
                         BookListView(
                             if (bookSearchEnabled)
                                 app.repository.getBookSearchResultStream(searchQuery)
@@ -48,7 +50,7 @@ fun SearchPage(app: AppModel) {
                             // TODO: Implement book details navigation
                         }
                     },
-                    TabData("READERS", R.drawable.baseline_diversity_1_36) {
+                    TabData("READERS", Icons.Default.Diversity1) {
                         UserListView(
                             if (userSearchEnabled)
                                 app.repository.getUserSearchResultStream(searchQuery)
