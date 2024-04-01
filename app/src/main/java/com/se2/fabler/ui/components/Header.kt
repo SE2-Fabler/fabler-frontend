@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.se2.fabler.R
 
 @Composable
-fun Header(onSearchToggle: () -> Unit) {
+fun Header(onSearchClick: () -> Unit, onUserClick: () -> Unit) {
     Surface(Modifier.fillMaxWidth().background(Color.Transparent)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -46,7 +46,7 @@ fun Header(onSearchToggle: () -> Unit) {
                 contentDescription = "Search",
                 modifier = Modifier
                     .padding(0.dp, 0.dp, 20.dp, 5.dp)
-                    .clickable(onClick = onSearchToggle)
+                    .clickable(onClick = onSearchClick)
             )
         }
     }
@@ -55,5 +55,5 @@ fun Header(onSearchToggle: () -> Unit) {
 @Composable
 @Preview(showBackground = true)
 private fun PreviewHeader() {
-    Header {}
+    Header({}, {})
 }

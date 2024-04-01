@@ -35,6 +35,7 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.se2.fabler.R
+import com.se2.fabler.TestDataSource
 import com.se2.fabler.models.BookData
 
 // Static configuration variables
@@ -42,18 +43,11 @@ val SHELF_HEIGHT = 200f.dp
 val SHELF_WOOD_HEIGHT = 25f.dp
 val SHELF_WOOD_PADDING = 10f.dp
 
-private var sampleBookData = listOf(
-    BookData(1, "Title 1", R.drawable.bg1, "Author 1", "Genre 1", "Description 1", true, 4, true),
-    BookData(2, "Title 2", R.drawable.bg2, "Author 2", "Genre 2", "Description 2", false, 4, true),
-    BookData(3, "Title 3", R.drawable.bg3, "Author 3", "Genre 3", "Description 3", true, 4, true),
-    BookData(4, "Title 4", R.drawable.bg4, "Author 4", "Genre 4", "Description 4", false, 4, true),
-)
-
 @Preview(showBackground = true)
 @Composable
 private fun PreviewBookShelfComponent() {
     MaterialTheme {
-        BookShelf(sampleBookData)
+        BookShelf(TestDataSource().books)
     }
 }
 
@@ -195,8 +189,7 @@ fun BookShelf(creationList: List<BookData>) {
         item {
             Box(modifier = Modifier.height(10.dp)) { }
         }
-        items(bookSplit.size) { index ->
-            val chunk = bookSplit[index]
+        items(bookSplit.size) {
             Row(
                 modifier = Modifier
                     .height(SHELF_HEIGHT),
@@ -209,7 +202,7 @@ fun BookShelf(creationList: List<BookData>) {
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly,
                 ) {
-                    chunk.forEach { creation -> DrawBook(creation) }
+                    bookSplit[it].forEach { creation -> DrawBook(creation) }
                 }
             }
             DrawHorizontalShelf()

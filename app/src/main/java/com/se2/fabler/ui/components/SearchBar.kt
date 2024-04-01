@@ -23,12 +23,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.se2.fabler.R
-import com.se2.fabler.ui.theme.AppColors.Companion.PRIMARY_FONT_COLOR
 import com.se2.fabler.ui.theme.AppColors.Companion.PRIMARY_COLOR
+import com.se2.fabler.ui.theme.AppColors.Companion.PRIMARY_FONT_COLOR
 import com.se2.fabler.ui.theme.AppColors.Companion.SECONDARY_COLOR
 
 @Composable
-fun SearchBar(onSearchToggle: () -> Unit) {
+fun SearchBar(onSearchClick: () -> Unit, onBackClick: () -> Unit) {
     Surface(modifier = Modifier.background(SECONDARY_COLOR)) {
         var text by rememberSaveable { mutableStateOf("") }
         Row(
@@ -52,13 +52,14 @@ fun SearchBar(onSearchToggle: () -> Unit) {
                     contentDescription = "Back",
                     modifier = Modifier
                         .padding(10.dp)
-                        .clickable(onClick = onSearchToggle)
+                        .clickable(onClick = onBackClick)
                 )
             }, trailingIcon = {
                 Image(
                     painter = painterResource(id = R.drawable.baseline_search_36),
                     contentDescription = "Search",
                     modifier = Modifier.padding(10.dp)
+                        .clickable(onClick = onSearchClick)
                 )
             }, modifier = Modifier
                     .fillMaxWidth()
@@ -70,5 +71,5 @@ fun SearchBar(onSearchToggle: () -> Unit) {
 @Composable
 @Preview(showBackground = true)
 private fun PreviewSearchBar() {
-    SearchBar {}
+    SearchBar({},{})
 }

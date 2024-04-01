@@ -5,5 +5,5 @@ import com.se2.fabler.models.UserData
 
 @Composable
 fun UserBookmarkScreen(user: UserData){
-    BookmarkScreen()
+
 }
