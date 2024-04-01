@@ -2,6 +2,7 @@ package com.se2.fabler.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.se2.fabler.R
+import com.se2.fabler.TestDataSource
 import com.se2.fabler.models.UserData
 import com.se2.fabler.ui.theme.AppColors
 import com.se2.fabler.ui.theme.AppColors.Companion.SECONDARY_COLOR
@@ -36,7 +38,7 @@ import com.se2.fabler.ui.views.DrawUser
 
 
 @Composable
-fun ProfileHeader(user: UserData) {
+fun ProfileHeader(user: UserData, displaySettingIcon: Boolean, onBackClick: () -> Unit, onSettingsClick: () -> Unit) {
     Surface(
         Modifier
             .fillMaxWidth()
@@ -52,15 +54,17 @@ fun ProfileHeader(user: UserData) {
                     painter = painterResource(id = R.drawable.back_arrow),
                     contentDescription = "Back",
                     modifier = Modifier.padding(10.dp)
-                    //.clickable(onClick = onSearchToggle)
+                    .clickable(onClick = onBackClick)
                 )
-                Spacer(Modifier.weight(1f))
-                Image(
-                    painter = painterResource(id = R.drawable.baseline_search_36),
-                    contentDescription = "Search",
-                    modifier = Modifier.padding(0.dp, 0.dp, 20.dp, 5.dp)
-                    //.clickable(onClick = onSearchToggle)
-                )
+                if(displaySettingIcon) {
+                    Spacer(Modifier.weight(1f))
+                    Image(
+                        painter = painterResource(id = R.drawable.baseline_search_36),
+                        contentDescription = "Search",
+                        modifier = Modifier.padding(0.dp, 0.dp, 20.dp, 5.dp)
+                            .clickable(onClick = onSettingsClick)
+                    )
+                }
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -192,23 +196,5 @@ fun ProfileHeader(user: UserData) {
 @Preview(showBackground = true)
 @Composable
 private fun PreviewProfileHeader() {
-    ProfileHeader(
-        UserData(
-            id = 1,
-            name = "Jaxen", "jaxendutta@gmail.com",
-            username = "jaxdutta",
-            profileImageResId = R.drawable.cat_1000,
-            followerCount = 5870526,
-            followingCount = 2334,
-            stories = listOf(),
-            bookmarks = listOf(),
-            bookmarkPrivacy = true,
-            about = "I am a writerhahahahaha" +
-                    "ghahahajytefcgkugewkufygwelgflewrgflqeglfqejfjhqerwf;khqwebfkbqwekbf",
-            location = "New York",
-            joined = "2021-10-10",
-            following = true,
-            isFollowing = false
-        )
-    )
+    ProfileHeader(TestDataSource().userdata, true, {}, {})
 }

@@ -12,7 +12,8 @@ import com.se2.fabler.ui.theme.FablerTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val appModel = AppModel()
+        // TODO: This is a placeholder for the actual app model
+        val appModel = getTestAppModel()
         appModel.pushView("HomePage")
         setContent {
             FablerTheme {

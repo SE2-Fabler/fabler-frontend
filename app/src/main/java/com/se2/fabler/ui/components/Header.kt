@@ -20,11 +20,11 @@ import com.se2.fabler.R
 
 @Composable
 fun Header(onSearchClick: () -> Unit, onUserClick: () -> Unit) {
-    Surface(Modifier.fillMaxWidth().background(Color.Transparent)) {
+    Surface(Modifier.fillMaxWidth().background(Color.White)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .background(Color.Transparent)
+                .background(Color.White)
                 .padding(0.dp, 10.dp)
         ) {
             Image(
@@ -32,7 +32,7 @@ fun Header(onSearchClick: () -> Unit, onUserClick: () -> Unit) {
                 contentDescription = "User Profile",
                 modifier = Modifier
                     .padding(20.dp, 0.dp, 0.dp, 0.dp)
-                    .clickable(onClick = {})
+                    .clickable(onClick = onUserClick)
             )
             Spacer(Modifier.weight(1f))
             Image(

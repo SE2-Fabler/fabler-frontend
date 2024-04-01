@@ -2,6 +2,7 @@ package com.se2.fabler
 
 import com.se2.fabler.models.BookData
 import com.se2.fabler.models.UserData
+import com.se2.fabler.models.UserDataAll
 
 class TestDataSource {
     val books: List<BookData>
@@ -244,8 +245,6 @@ class TestDataSource {
                 profileImageResId = R.drawable.cat_1000,
                 followerCount = 284762,
                 followingCount = 38762237,
-                stories = listOf(),
-                bookmarks = listOf(),
                 bookmarkPrivacy = true,
                 about = "I am a writer kufkfj\n" +
                         "jtfkg\n" +
@@ -256,4 +255,9 @@ class TestDataSource {
                 isFollowing = false
             )
         }
+}
+
+fun getTestAppModel(): AppModel {
+    val tds = TestDataSource()
+    return AppModel(-1, UserDataAll(tds.userdata, tds.books, tds.books))
 }
