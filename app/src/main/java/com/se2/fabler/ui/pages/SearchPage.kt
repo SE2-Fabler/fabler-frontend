@@ -45,10 +45,8 @@ fun SearchPage(app: AppModel) {
                             if (bookSearchEnabled)
                                 app.repository.getBookSearchResultStream(searchQuery)
                                     .collectAsLazyPagingItems()
-                            else emptyBookFlow
-                        ) { book ->
-                            // TODO: Implement book details navigation
-                        }
+                            else emptyBookFlow, app
+                        )
                     },
                     TabData("READERS", Icons.Default.Diversity1) {
                         UserListView(
@@ -57,8 +55,7 @@ fun SearchPage(app: AppModel) {
                                     .collectAsLazyPagingItems()
                             else emptyUserFlow
                         ) { user ->
-                            app.userToDisplayId = user.id
-                            app.pushView("ProfilePage")
+                            app.pushView("ProfilePage", user.id)
                         }
                     },
                 )

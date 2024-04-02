@@ -35,8 +35,7 @@ fun HomePage(app: AppModel) {
         Header({
             app.pushView("SearchPage")
         }, {
-            app.userToDisplayId = app.loggedInUserData.user.id
-            app.pushView("ProfilePage")
+            app.pushView("ProfilePage", app.loggedInUserData.user.id)
         })
     }
 }

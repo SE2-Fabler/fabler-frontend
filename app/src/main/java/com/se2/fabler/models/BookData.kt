@@ -5,6 +5,7 @@ data class BookData(
     val title: String,
     val imageResId: Int,
     val author: String,
+    val authorUserId: Int,
     val genre: String,
     val description: String,
     val private: Boolean,

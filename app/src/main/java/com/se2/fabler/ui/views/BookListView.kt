@@ -2,6 +2,7 @@ package com.se2.fabler.ui.views
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,7 +35,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -49,7 +49,9 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.se2.fabler.AppModel
 import com.se2.fabler.TestDataSource
+import com.se2.fabler.getTestAppModel
 import com.se2.fabler.models.BookData
 import com.se2.fabler.ui.components.DrawBook
 import com.se2.fabler.ui.theme.AppColors
@@ -125,9 +127,12 @@ private fun DrawBookItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BookListView(lazyBookData: LazyPagingItems<BookData>, onSelectBook: (BookData) -> Unit = {}) {
+fun BookListView(
+    lazyBookData: LazyPagingItems<BookData>, app: AppModel,
+    onSwitchProfile: (Int) -> Unit = {}
+) {
     val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
+    // val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
     var contextMenuBook by rememberSaveable { mutableStateOf<BookData?>(null) }
 
@@ -146,7 +151,10 @@ fun BookListView(lazyBookData: LazyPagingItems<BookData>, onSelectBook: (BookDat
                 Spacer(modifier = Modifier.height(15.dp))
             }
             items(lazyBookData.itemCount) { idx ->
-                DrawBookItem(lazyBookData[idx] ?: return@items, onSelectBook) {
+                DrawBookItem(lazyBookData[idx] ?: return@items, {
+                    // TODO: On top book
+                    // app.pushView("BookPage")
+                }) {
                     showBottomSheet = true
                     contextMenuBook = it
                 }
@@ -164,6 +172,9 @@ fun BookListView(lazyBookData: LazyPagingItems<BookData>, onSelectBook: (BookDat
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 10.dp, horizontal = 20.dp)
+                        .clickable {
+                            // On bookmark click
+                        }
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.BookmarkAdd,
@@ -198,7 +209,11 @@ fun BookListView(lazyBookData: LazyPagingItems<BookData>, onSelectBook: (BookDat
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 10.dp, horizontal = 20.dp)
-                    /*.clickable( ) TODO: LINK USER PROFILE */
+                        .clickable {
+                            showBottomSheet = false
+                            onSwitchProfile(contextMenuBook!!.authorUserId)
+                            app.pushView("ProfilePage", contextMenuBook!!.authorUserId)
+                        }
                 ) {
                     Icon(
                         imageVector = Icons.Default.PersonPin,
@@ -222,7 +237,7 @@ fun BookListView(lazyBookData: LazyPagingItems<BookData>, onSelectBook: (BookDat
 @Preview(showBackground = true)
 private fun PreviewBookListView() {
     val books = TestDataSource().books
-    BookListView(flowOf(PagingData.from(books)).collectAsLazyPagingItems()) {}
+    BookListView(flowOf(PagingData.from(books)).collectAsLazyPagingItems(), getTestAppModel())
 }
 
 @Composable

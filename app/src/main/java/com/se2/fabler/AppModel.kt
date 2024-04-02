@@ -6,8 +6,6 @@ import com.se2.fabler.api.FablerService
 import com.se2.fabler.models.UserDataAll
 
 class AppModel(
-    // User data to display for ProfilePage
-    var userToDisplayId: Int,
     // Logged in user's data
     // FIXME: Currently there's no way to refresh this!
     var loggedInUserData: UserDataAll
@@ -17,10 +15,13 @@ class AppModel(
     /* ===------------------------------------------------------------------------------------=== */
 
     // Private nav stack, does not refresh UI
-    private val viewStack = mutableListOf<String>()
+    private val viewStack = mutableListOf<Pair<String, Any?>>()
 
     // Private current view, writes will cause recompose
     private val currentViewMut = mutableStateOf("")
+
+    // Public current view's data
+    val currentViewData: Any? get() = viewStack.lastOrNull()?.second
 
     /**
      * Gets the current view at the top of the nav stack
@@ -30,8 +31,8 @@ class AppModel(
     /**
      * Pushes a view onto the nav stack and change to it
      */
-    fun pushView(name: String) {
-        viewStack.add(name)
+    fun pushView(name: String, data: Any? = null) {
+        viewStack.add(Pair(name, data))
         currentViewMut.value = name
     }
 
@@ -40,7 +41,7 @@ class AppModel(
      */
     fun popView() {
         viewStack.removeLast()
-        currentViewMut.value = viewStack.last()
+        currentViewMut.value = viewStack.last().first
     }
 
     /* ===------------------------------------------------------------------------------------=== */

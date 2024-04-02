@@ -6,6 +6,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.outlined.Bookmarks
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -19,11 +23,12 @@ import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun ProfilePage(app: AppModel) {
-    val isCurrentUser = app.userToDisplayId == app.loggedInUserData.user.id
+    var userToDisplayId by remember { mutableIntStateOf(app.currentViewData as Int) }
+    val isCurrentUser = userToDisplayId == app.loggedInUserData.user.id
     val allUserData = if (isCurrentUser) {
         app.loggedInUserData
     } else {
-        app.service.getUserDataAll(app.userToDisplayId)
+        app.service.getUserDataAll(userToDisplayId)
     }
     val lazyStories = flowOf(PagingData.from(allUserData.stories)).collectAsLazyPagingItems()
     val lazyBookmarks = flowOf(PagingData.from(allUserData.bookmarks)).collectAsLazyPagingItems()
@@ -31,6 +36,9 @@ fun ProfilePage(app: AppModel) {
         Column {
             ProfileHeader(allUserData.user, isCurrentUser, {
                 app.popView()
+                if(app.currentViewData is Int) {
+                    userToDisplayId = app.currentViewData as Int
+                }
             }, {
                 // TODO: Implement settings page
             })
@@ -38,10 +46,14 @@ fun ProfilePage(app: AppModel) {
                 CustomTabStrip(
                     listOf(
                         TabData("CREATIONS", Icons.AutoMirrored.Filled.MenuBook) {
-                            BookListView(lazyStories) {}
+                            BookListView(lazyStories, app) { userId ->
+                                userToDisplayId = userId
+                            }
                         },
                         TabData("BOOKMARKS", Icons.Outlined.Bookmarks) {
-                            BookListView(lazyBookmarks) {}
+                            BookListView(lazyBookmarks, app) { userId ->
+                                userToDisplayId = userId
+                            }
                         },
                     )
                 )
