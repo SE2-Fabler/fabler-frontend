@@ -9,16 +9,17 @@ class TestDataSource {
         get() {
             return listOf(
                 BookData(
-                    1, "Fortune Killer", R.drawable.bg1, "demigod3ss", "Horror",
+                    0, "Fortune Killer", R.drawable.bg1, "demigod3ss", 6538, "Crime",
                     "Jaxen’s got a secret past that threatens to bring down the school’s whole social order – and much more.",
                     true, 4, true
                 ),
                 BookData(
                     1,
-                    "Title 1",
+                    "Spiders in the Night",
                     R.drawable.bg2,
-                    "Author 1",
-                    "Genre 1",
+                    "bja",
+                    2,
+                    "Horror",
                     "Description 1",
                     true,
                     4,
@@ -29,6 +30,7 @@ class TestDataSource {
                     "Title 2",
                     R.drawable.bg3,
                     "Autho3 2",
+                    2,
                     "Genre 2",
                     "Description 2",
                     false,
@@ -40,6 +42,7 @@ class TestDataSource {
                     "Title 3",
                     R.drawable.bg4,
                     "Author 3",
+                    3,
                     "Genre 3",
                     "Description 3",
                     true,
@@ -51,6 +54,7 @@ class TestDataSource {
                     "Title 4",
                     R.drawable.bg1,
                     "Author 4",
+                    4,
                     "Genre 4",
                     "Description 4",
                     false,
@@ -62,6 +66,7 @@ class TestDataSource {
                     "Title 5",
                     R.drawable.bg3,
                     "Author 5",
+                    5,
                     "Genre 5",
                     "Description 5",
                     true,
@@ -73,6 +78,7 @@ class TestDataSource {
                     "Title 6",
                     R.drawable.bg4,
                     "Author 6",
+                    6,
                     "Genre 6",
                     "Description 6",
                     false,
@@ -84,6 +90,7 @@ class TestDataSource {
                     "Title 7",
                     R.drawable.bg2,
                     "Author 7",
+                    7,
                     "Genre 7",
                     "Description 7",
                     true,
@@ -95,6 +102,7 @@ class TestDataSource {
                     "Title 8",
                     R.drawable.bg3,
                     "Author 8",
+                    8,
                     "Genre 8",
                     "Description 8",
                     false,
@@ -106,6 +114,7 @@ class TestDataSource {
                     "Title 9",
                     R.drawable.bg4,
                     "Author 9",
+                    9,
                     "Genre 9",
                     "Description 9",
                     true,
@@ -117,6 +126,7 @@ class TestDataSource {
                     "Title 10",
                     R.drawable.bg1,
                     "Author 10",
+                    10,
                     "Genre 10",
                     "Description 10",
                     false,
@@ -128,6 +138,7 @@ class TestDataSource {
                     "Title 11",
                     R.drawable.bg2,
                     "Author 11",
+                    11,
                     "Genre 11",
                     "Description 11",
                     true,
@@ -139,6 +150,7 @@ class TestDataSource {
                     "Title 12",
                     R.drawable.bg3,
                     "Author 12",
+                    12,
                     "Genre 12",
                     "Description 12",
                     false,
@@ -150,6 +162,7 @@ class TestDataSource {
                     "Title 13",
                     R.drawable.bg4,
                     "Author 13",
+                    13,
                     "Genre 13",
                     "Description 13",
                     true,
@@ -161,6 +174,7 @@ class TestDataSource {
                     "Title 14",
                     R.drawable.bg2,
                     "Author 14",
+                    14,
                     "Genre 14",
                     "Description 14",
                     false,
@@ -172,6 +186,7 @@ class TestDataSource {
                     "Title 15",
                     R.drawable.bg3,
                     "Author 15",
+                    15,
                     "Genre 15",
                     "Description 15",
                     true,
@@ -183,6 +198,7 @@ class TestDataSource {
                     "Title 16",
                     R.drawable.bg1,
                     "Author 16",
+                    16,
                     "Genre 16",
                     "Description 16",
                     false,
@@ -194,6 +210,7 @@ class TestDataSource {
                     "Title 17",
                     R.drawable.bg2,
                     "Author 17",
+                    17,
                     "Genre 17",
                     "Description 17",
                     true,
@@ -205,6 +222,7 @@ class TestDataSource {
                     "Title 18",
                     R.drawable.bg4,
                     "Author 18",
+                    18,
                     "Genre 18",
                     "Description 18",
                     false,
@@ -216,6 +234,7 @@ class TestDataSource {
                     "Title 19",
                     R.drawable.bg1,
                     "Author 19",
+                    19,
                     "Genre 19",
                     "Description 19",
                     true,
@@ -227,6 +246,7 @@ class TestDataSource {
                     "Title 20",
                     R.drawable.bg4,
                     "Author 20",
+                    20,
                     "Genre 20",
                     "Description 20",
                     false,
@@ -255,9 +275,27 @@ class TestDataSource {
                 isFollowing = false
             )
         }
+    val otheruser: UserData
+        get() {
+            return UserData (
+                id = 2,
+                name = "Bob Joe Alice",
+                email = "bobjoealice",
+                username = "bja",
+                profileImageResId = R.drawable.cat_1000,
+                followerCount = 262,
+                followingCount = 3877,
+                bookmarkPrivacy = true,
+                about = "DO NOT talk to me!!! >:((",
+                location = "New Hampshire",
+                joined = "2021-20-10",
+                following = true,
+                isFollowing = false
+            )
+        }
 }
 
 fun getTestAppModel(): AppModel {
     val tds = TestDataSource()
-    return AppModel(-1, UserDataAll(tds.userdata, tds.books, tds.books))
+    return AppModel(UserDataAll(tds.userdata, tds.books, tds.books))
 }

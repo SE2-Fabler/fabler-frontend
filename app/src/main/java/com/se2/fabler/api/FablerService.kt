@@ -1,7 +1,9 @@
 package com.se2.fabler.api
 
+import android.util.Log
 import com.se2.fabler.TestDataSource
 import com.se2.fabler.models.BookData
+import com.se2.fabler.models.CredentialsData
 import com.se2.fabler.models.UserData
 import com.se2.fabler.models.UserDataAll
 
@@ -22,7 +24,7 @@ class FablerService {
         // Delay for 2 second to simulate network request
         Thread.sleep(1000)
         return if (page < 10) {
-            return List(itemsPerPage){dataSource.userdata}
+            return List(itemsPerPage){dataSource.otheruser}
         } else {
             listOf()
         }
@@ -31,6 +33,19 @@ class FablerService {
     fun getUserDataAll(userId: Int): UserDataAll {
         // Delay for 1 second to simulate network request
         Thread.sleep(1000)
-        return UserDataAll(dataSource.userdata, dataSource.books, dataSource.books)
+        Log.d("FablerService", "getUserDataAll: $userId")
+        return if(userId == 1)
+            UserDataAll(dataSource.userdata, dataSource.books, dataSource.books)
+        else
+            UserDataAll(dataSource.otheruser, dataSource.books, dataSource.books)
+    }
+
+    fun authUser(credential: CredentialsData): UserData? {
+        // Delay for 1 second to simulate network request
+        Thread.sleep(1000)
+        return if(dataSource.userdata.username == credential.username)
+            dataSource.userdata
+        else
+            null
     }
 }
