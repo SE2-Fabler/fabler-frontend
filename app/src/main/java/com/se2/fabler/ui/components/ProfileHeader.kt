@@ -180,7 +180,7 @@ fun ProfileHeader(
                     text = if (user.followingCount < 1000) {
                         "${user.followingCount}"
                     } else if (user.followingCount < 1000000) {
-                        String.format("%.1fk", user.followingCount / 1000.0)
+                        String.format("%.1fK", user.followingCount / 1000.0)
                     } else {
                         String.format("%.1fM", user.followingCount / 1000000.0)
                     },

@@ -2,24 +2,47 @@ package com.se2.fabler.ui.components
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PersonPin
+import androidx.compose.material.icons.outlined.BookmarkAdd
+import androidx.compose.material.icons.outlined.DeleteForever
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -31,12 +54,16 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.se2.fabler.AppModel
 import com.se2.fabler.R
 import com.se2.fabler.TestDataSource
+import com.se2.fabler.getTestAppModel
 import com.se2.fabler.models.BookData
 
 // Static configuration variables
@@ -44,13 +71,6 @@ val SHELF_HEIGHT = 200f.dp
 val SHELF_WOOD_HEIGHT = 25f.dp
 val SHELF_WOOD_PADDING = 10f.dp
 
-@Preview(showBackground = true)
-@Composable
-private fun PreviewBookShelfComponent() {
-    MaterialTheme {
-        BookShelf(TestDataSource().books)
-    }
-}
 
 fun drawScaledBitmap(
     canvas: DrawScope,
@@ -115,14 +135,28 @@ fun DrawHorizontalShelf(scaleFactor: Float = 1.0f, topPadding: Dp = SHELF_HEIGHT
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DrawBook(creation: BookData) {
-    val creationCover = ImageBitmap.imageResource(creation.imageResId)
+fun DrawBook(
+    book: BookData,
+    onSelectBook: (BookData) -> Unit,
+    onBookLongPress: (BookData) -> Unit
+) {
+    val creationCover = ImageBitmap.imageResource(book.imageResId)
     val bookCover = ImageBitmap.imageResource(R.drawable.book_case)
+    val haptics = LocalHapticFeedback.current
     ElevatedCard(
         modifier = Modifier
             .aspectRatio(2f / 3f)
-            .background(Color.Transparent),
+            .background(Color.Transparent)
+            .combinedClickable(
+                onClick = { onSelectBook(book) },
+                onLongClick = {
+                    haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onBookLongPress(book)
+                },
+                onLongClickLabel = "Open book options"
+            ),
         shape = RoundedCornerShape(3.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
@@ -177,8 +211,16 @@ fun DrawBook(creation: BookData) {
     } // End ElevatedCard
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BookShelf(creationList: List<BookData>) {
+fun BookShelf(
+    creationList: List<BookData>,
+    app: AppModel,
+    onSwitchProfile: (Int) -> Unit = {}
+) {
+    val sheetState = rememberModalBottomSheetState()
+    var showBottomSheet by remember { mutableStateOf(false) }
+    var contextMenuBook by rememberSaveable { mutableStateOf<BookData?>(null) }
     val bookSplit = creationList.chunked(3)
     LazyVerticalGrid(
         GridCells.Fixed(1),
@@ -203,7 +245,136 @@ fun BookShelf(creationList: List<BookData>) {
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly,
                 ) {
-                    bookSplit[it].forEach { creation -> DrawBook(creation) }
+                    bookSplit[it].forEach { creation -> DrawBook(
+                        creation,
+                        {}) {
+                            contextMenuBook = it
+                            showBottomSheet = true
+                        }
+                    }
+                    if (showBottomSheet) {
+                        ModalBottomSheet(
+                            onDismissRequest = { showBottomSheet = false },
+                            sheetState = sheetState
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp, horizontal = 20.dp)
+                                    .clickable {
+                                        // On bookmark click
+                                    }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.BookmarkAdd,
+                                    contentDescription = "Bookmark",
+                                    modifier = Modifier.size(32.dp),
+                                    tint = Color.DarkGray
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "Bookmark",
+                                    style = MaterialTheme.typography.titleLarge
+                                )
+                            }
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp, horizontal = 20.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Info,
+                                    contentDescription = "Info",
+                                    modifier = Modifier.size(32.dp),
+                                    tint = Color.DarkGray
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "Novel Details",
+                                    style = MaterialTheme.typography.titleLarge
+                                )
+                            }
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp, horizontal = 20.dp)
+                                    .clickable {
+                                        showBottomSheet = false
+                                        onSwitchProfile(contextMenuBook!!.authorUserId)
+                                        app.pushView("ProfilePage", contextMenuBook!!.authorUserId)
+                                    }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.PersonPin,
+                                    contentDescription = "View Profile",
+                                    modifier = Modifier.size(32.dp),
+                                    tint = Color.DarkGray
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "View Profile",
+                                    style = MaterialTheme.typography.titleLarge
+                                )
+                            }
+                            if (contextMenuBook!!.authorUserId == app.loggedInUserData.user.id) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp, horizontal = 20.dp)
+                                        .clickable {
+                                            // TODO: Toggle Privacy
+                                        }
+                                ) {
+                                    if (contextMenuBook!!.private) {
+                                        Icon(
+                                            imageVector = Icons.Outlined.Visibility,
+                                            contentDescription = "Make Public",
+                                            modifier = Modifier.size(32.dp),
+                                            tint = Color.DarkGray
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(
+                                            text = "Set to Public",
+                                            style = MaterialTheme.typography.titleLarge
+                                        )
+                                    } else {
+                                        Icon(
+                                            imageVector = Icons.Outlined.VisibilityOff,
+                                            contentDescription = "Turn On Privacy",
+                                            modifier = Modifier.size(32.dp),
+                                            tint = Color.DarkGray
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(
+                                            text = "Set to Only You",
+                                            style = MaterialTheme.typography.titleLarge
+                                        )
+                                    }
+                                }
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp, horizontal = 20.dp)
+                                        .clickable {
+                                            // TODO: Delete book since user is the author
+                                        }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.DeleteForever,
+                                        contentDescription = "Delete Book",
+                                        modifier = Modifier.size(32.dp),
+                                        tint = Color.DarkGray
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = "Delete Permanently",
+                                        style = MaterialTheme.typography.titleLarge
+                                    )
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(28.dp))
+                        }
+                    }
                 }
             }
             DrawHorizontalShelf()
@@ -211,5 +382,13 @@ fun BookShelf(creationList: List<BookData>) {
         item {
             Box(modifier = Modifier.height(50.dp)) { }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewBookShelfComponent() {
+    MaterialTheme {
+        BookShelf(TestDataSource().books, getTestAppModel())
     }
 }

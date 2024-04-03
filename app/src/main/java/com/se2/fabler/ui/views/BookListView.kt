@@ -20,7 +20,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PersonPin
 import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material.icons.outlined.BookmarkAdd
+import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -87,7 +90,7 @@ private fun DrawBookItem(
                 .padding(10.dp)
                 .height(120.dp)
         ) {
-            DrawBook(creation = book)
+            DrawBook(book = book, {}, {})
             Spacer(modifier = Modifier.width(10.dp))
             VerticalDivider()
             Spacer(modifier = Modifier.width(10.dp))
@@ -132,7 +135,6 @@ fun BookListView(
     onSwitchProfile: (Int) -> Unit = {}
 ) {
     val sheetState = rememberModalBottomSheetState()
-    // val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
     var contextMenuBook by rememberSaveable { mutableStateOf<BookData?>(null) }
 
@@ -151,12 +153,15 @@ fun BookListView(
                 Spacer(modifier = Modifier.height(15.dp))
             }
             items(lazyBookData.itemCount) { idx ->
-                DrawBookItem(lazyBookData[idx] ?: return@items, {
+                DrawBookItem(
+                    lazyBookData[idx] ?: return@items,
+                    {
                     // TODO: On top book
                     // app.pushView("BookPage")
-                }) {
-                    showBottomSheet = true
+                    }
+                ) {
                     contextMenuBook = it
+                    showBottomSheet = true
                 }
             }
             item {
@@ -226,6 +231,62 @@ fun BookListView(
                         text = "View Profile",
                         style = typography.titleLarge
                     )
+                }
+                if (contextMenuBook!!.authorUserId == app.loggedInUserData.user.id) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp, horizontal = 20.dp)
+                            .clickable {
+                                // TODO: Toggle Privacy
+                            }
+                    ) {
+                        if (contextMenuBook!!.private) {
+                            Icon(
+                                imageVector = Icons.Outlined.Visibility,
+                                contentDescription = "Make Public",
+                                modifier = Modifier.size(32.dp),
+                                tint = Color.DarkGray
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Set to Public",
+                                style = typography.titleLarge
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Outlined.VisibilityOff,
+                                contentDescription = "Turn On Privacy",
+                                modifier = Modifier.size(32.dp),
+                                tint = Color.DarkGray
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Set to Only You",
+                                style = typography.titleLarge
+                            )
+                        }
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp, horizontal = 20.dp)
+                            .clickable {
+                            // TODO: Delete book since user is the author
+                            }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.DeleteForever,
+                            contentDescription = "Delete Book",
+                            modifier = Modifier.size(32.dp),
+                            tint = Color.DarkGray
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Delete Permanently",
+                            style = typography.titleLarge
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(28.dp))
             }

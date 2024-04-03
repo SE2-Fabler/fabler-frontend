@@ -17,8 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AlternateEmail
 import androidx.compose.material.icons.filled.Key
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -56,17 +57,18 @@ import com.se2.fabler.getTestAppModel
 import com.se2.fabler.models.CredentialsData
 
 @Composable
-fun UsernameField(
+fun LoginField(
     value: String,
     onChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    label: String = "Username",
-    placeholder: String = "Enter your username"
+    label: String,
+    placeholder: String = "Enter your $label",
+    icon: ImageVector
 ) {
     val focusManager = LocalFocusManager.current
     val leadingIcon = @Composable {
         Icon(
-            imageVector = Icons.Default.Person,
+            imageVector = icon,
             contentDescription = ""
         )
     }
@@ -95,7 +97,6 @@ fun PasswordField(
     label: String = "Password",
     placeholder: String = "Enter your Password"
 ) {
-
     val isPasswordVisible = remember { mutableStateOf(false) }
     val leadingIcon = @Composable {
         Icon(
@@ -175,12 +176,14 @@ fun SignInPage(app: AppModel) {
                     .clip(RoundedCornerShape(15.dp))
             )
             Spacer(modifier = Modifier.height(200.dp))
-            UsernameField(
+            LoginField(
                 value = credentialsData.value.username,
                 onChange = { data -> credentialsData.value = credentialsData.value.copy(username = data) },
                 modifier = Modifier.fillMaxWidth()
                     .padding(bottom = 10.dp)
-                    .clip(RoundedCornerShape(30.dp))
+                    .clip(RoundedCornerShape(30.dp)),
+                label = "Username",
+                icon = Icons.Default.AlternateEmail,
             )
             PasswordField(
                 value = credentialsData.value.password,
@@ -224,7 +227,9 @@ fun SignInPage(app: AppModel) {
                     text = "Don't have an account?",
                     color = Color.White,
                     fontWeight = FontWeight.Bold)
-                TextButton(onClick = {}) {
+                TextButton(onClick = {
+                    app.pushView("SignUpPage")
+                }) {
                     Text(
                         text = "SIGN UP",
                         fontWeight = FontWeight.Bold
