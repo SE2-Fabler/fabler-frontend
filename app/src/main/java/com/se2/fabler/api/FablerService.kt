@@ -6,13 +6,37 @@ import com.se2.fabler.models.BookData
 import com.se2.fabler.models.CredentialsData
 import com.se2.fabler.models.UserData
 import com.se2.fabler.models.UserDataAll
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 
 class FablerService {
+    val serverurl = "http://10.0.0.178:5000/";
+    var client = OkHttpClient();
     private val dataSource: TestDataSource = TestDataSource()
 
     fun searchBooks(query: String, page: Int, itemsPerPage: Int): List<BookData> {
-        // Delay for 2 second to simulate network request
-        Thread.sleep(1000)
+        // Delay for 1 second to simulate network request
+        println("reached")
+        println(query)
+        println(serverurl+"story")
+        val request = Request.Builder().url(serverurl+"story").build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: java.io.IOException) {
+                // Handle failure
+                println("FAILURE")
+                println(e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                // Handle success
+                val result = response.body?.string() ?: ""
+                // Process the response data
+                println(result)
+            }
+        })
         return if (page < 10) {
             List(itemsPerPage) { dataSource.books[0] }
         } else {
