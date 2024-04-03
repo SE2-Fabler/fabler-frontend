@@ -28,10 +28,12 @@ import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -57,6 +59,7 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -65,6 +68,7 @@ import com.se2.fabler.R
 import com.se2.fabler.TestDataSource
 import com.se2.fabler.getTestAppModel
 import com.se2.fabler.models.BookData
+import com.se2.fabler.ui.theme.AppColors.Companion.PRIMARY_FONT_COLOR
 
 // Static configuration variables
 val SHELF_HEIGHT = 200f.dp
@@ -98,7 +102,7 @@ fun DrawHorizontalShelf(scaleFactor: Float = 1.0f, topPadding: Dp = SHELF_HEIGHT
         val shelfMiddleImg = ImageBitmap.imageResource(R.drawable.shelf_middle)
         ElevatedCard(
             modifier = Modifier
-                .height(SHELF_WOOD_HEIGHT*scaleFactor)
+                .height(SHELF_WOOD_HEIGHT * scaleFactor)
                 .fillMaxWidth()
                 .padding(
                     SHELF_WOOD_PADDING, 0.dp
@@ -221,6 +225,7 @@ fun BookShelf(
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     var contextMenuBook by rememberSaveable { mutableStateOf<BookData?>(null) }
+    var showPopup by remember { mutableStateOf(false) }
     val bookSplit = creationList.chunked(3)
     LazyVerticalGrid(
         GridCells.Fixed(1),
@@ -281,6 +286,10 @@ fun BookShelf(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 10.dp, horizontal = 20.dp)
+                                    .clickable {
+                                        showBottomSheet = false
+                                        showPopup = true
+                                    }
                             ) {
                                 Icon(
                                     imageVector = Icons.Outlined.Info,
@@ -374,6 +383,55 @@ fun BookShelf(
                             }
                             Spacer(modifier = Modifier.height(28.dp))
                         }
+                    }
+                    if (showPopup) {
+                        AlertDialog(
+                            onDismissRequest = { showPopup = false },
+                            confirmButton = { /*TODO*/ },
+                            dismissButton = { /*TODO*/ },
+                            icon = {
+                                Icon(
+                                    imageVector = Icons.Outlined.Info,
+                                    contentDescription = "Info",
+                                    tint = Color.DarkGray
+                                )
+                            },
+                            title = {
+                                Text(
+                                    text = "Novel Details",
+                                    style = MaterialTheme.typography.titleLarge
+                                )
+                            },
+                            text = {
+                                Column {
+                                    Text(
+                                        text = contextMenuBook!!.title,
+                                        style = MaterialTheme.typography.titleLarge,
+                                        textAlign = TextAlign.Center
+                                    )
+                                    Text(
+                                        text = "@${contextMenuBook!!.author}",
+                                        style = MaterialTheme.typography.titleMedium,
+                                        color = PRIMARY_FONT_COLOR,
+                                        textAlign = TextAlign.Center
+                                    )
+                                    Text(
+                                        text = contextMenuBook!!.genre,
+                                        style = MaterialTheme.typography.titleMedium,
+                                        color = Color.Gray,
+                                        textAlign = TextAlign.Center
+                                    )
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    HorizontalDivider()
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    Text(
+                                        text = contextMenuBook!!.description,
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                }
+
+                            }
+                        )
                     }
                 }
             }
