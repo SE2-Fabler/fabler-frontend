@@ -1,6 +1,9 @@
 package com.se2.fabler.api
 
 import android.util.Log
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.se2.fabler.R
 import com.se2.fabler.TestDataSource
 import com.se2.fabler.models.BookData
 import com.se2.fabler.models.CredentialsData
@@ -28,13 +31,26 @@ class FablerService {
                 // Handle failure
                 println("FAILURE")
                 println(e)
+                throw e
             }
 
             override fun onResponse(call: Call, response: Response) {
                 // Handle success
-                val result = response.body?.string() ?: ""
+                val js = response.body?.string() ?: ""
                 // Process the response data
-                println(result)
+                println(js)
+                val typeToken = object : TypeToken<List<List<String>>>() {}.type
+                var result = Gson().fromJson<List<List<String>>>(js, typeToken)
+                var books: List<BookData> = listOf()
+                for (s in result) {
+                    println(s)
+                    var bm = 0
+                    if (s[7] != null){
+                        bm = s[7].toInt()
+                    }
+                    books = books + BookData(s[0].toInt(), s[1], R.drawable.bg1, s[2], s[3].toInt(), s[5], s[6], false, bm, false)
+                }
+                println(books)
             }
         })
         return if (page < 10) {
