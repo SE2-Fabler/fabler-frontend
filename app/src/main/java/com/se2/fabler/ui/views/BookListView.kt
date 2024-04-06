@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,10 +25,12 @@ import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.ModalBottomSheet
@@ -46,6 +49,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -137,6 +141,7 @@ fun BookListView(
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     var contextMenuBook by rememberSaveable { mutableStateOf<BookData?>(null) }
+    var showPopup by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -197,6 +202,10 @@ fun BookListView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 10.dp, horizontal = 20.dp)
+                        .clickable {
+                            showBottomSheet = false
+                            showPopup = true
+                        }
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Info,
@@ -210,27 +219,29 @@ fun BookListView(
                         style = typography.titleLarge
                     )
                 }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp, horizontal = 20.dp)
-                        .clickable {
-                            showBottomSheet = false
-                            onSwitchProfile(contextMenuBook!!.authorUserId)
-                            app.pushView("ProfilePage", contextMenuBook!!.authorUserId)
-                        }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.PersonPin,
-                        contentDescription = "View Profile",
-                        modifier = Modifier.size(32.dp),
-                        tint = Color.DarkGray
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "View Profile",
-                        style = typography.titleLarge
-                    )
+                if (contextMenuBook!!.authorUserId != app.loggedInUserData.user.id) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp, horizontal = 20.dp)
+                            .clickable {
+                                showBottomSheet = false
+                                onSwitchProfile(contextMenuBook!!.authorUserId)
+                                app.pushView("ProfilePage", contextMenuBook!!.authorUserId)
+                            }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.PersonPin,
+                            contentDescription = "View Profile",
+                            modifier = Modifier.size(32.dp),
+                            tint = Color.DarkGray
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "View Profile",
+                            style = typography.titleLarge
+                        )
+                    }
                 }
                 if (contextMenuBook!!.authorUserId == app.loggedInUserData.user.id) {
                     Row(
@@ -272,7 +283,7 @@ fun BookListView(
                             .fillMaxWidth()
                             .padding(vertical = 10.dp, horizontal = 20.dp)
                             .clickable {
-                            // TODO: Delete book since user is the author
+                                // TODO: Delete book since user is the author
                             }
                     ) {
                         Icon(
@@ -290,6 +301,61 @@ fun BookListView(
                 }
                 Spacer(modifier = Modifier.height(28.dp))
             }
+        }
+        if (showPopup) {
+            AlertDialog(
+                onDismissRequest = { showPopup = false },
+                confirmButton = { /*TODO*/ },
+                dismissButton = { /*TODO*/ },
+                icon = {
+                    Row {
+                        Icon(
+                            imageVector = Icons.Outlined.Info,
+                            contentDescription = "Info",
+                            tint = Color.DarkGray
+                        )
+                        Spacer(modifier = Modifier.width(10f.dp))
+                        Text(
+                            text = "Novel Details"
+                        )
+                    }
+                },
+                title = {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = contextMenuBook!!.title,
+                            style = typography.titleLarge
+                        )
+                        Text(
+                            text = "@${contextMenuBook!!.author}",
+                            style = typography.titleMedium,
+                            color = AppColors.PRIMARY_FONT_COLOR
+                        )
+                    }
+                },
+                text = {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Box(modifier = Modifier.height(200.dp)) {
+                            DrawBook(book = contextMenuBook!!, onSelectBook = {}, {})
+                        }
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(
+                            text = contextMenuBook!!.genre,
+                            style = typography.titleMedium,
+                            color = Color.Gray,
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        HorizontalDivider()
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(
+                            text = contextMenuBook!!.description,
+                            style = typography.bodyLarge
+                        )
+                    }
+
+                }
+            )
         }
     }
 }

@@ -158,13 +158,14 @@ fun ProfileHeader(
             }
             Spacer(modifier = Modifier.height(5.dp))
             Row {
+                val followerCount = user.followerList.size
                 Text(
-                    text = if (user.followerCount < 1000) {
-                        "${user.followerCount}"
-                    } else if (user.followerCount < 1000000) {
-                        String.format("%.1fK", user.followerCount / 1000.0)
+                    text = if (followerCount < 1000) {
+                        "${followerCount}"
+                    } else if (followerCount < 1000000) {
+                        String.format("%.1fK", followerCount / 1000.0)
                     } else {
-                        String.format("%.1fM", user.followerCount / 1000000.0)
+                        String.format("%.1fM", followerCount / 1000000.0)
                     },
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppColors.PRIMARY_FONT_COLOR,
@@ -176,13 +177,14 @@ fun ProfileHeader(
                     color = AppColors.PRIMARY_FONT_COLOR
                 )
                 Spacer(modifier = Modifier.width(10.dp))
+                val followingCount = user.followingList.size
                 Text(
-                    text = if (user.followingCount < 1000) {
-                        "${user.followingCount}"
-                    } else if (user.followingCount < 1000000) {
-                        String.format("%.1fK", user.followingCount / 1000.0)
+                    text = if (followingCount < 1000) {
+                        "${followingCount}"
+                    } else if (followingCount < 1000000) {
+                        String.format("%.1fK", followingCount / 1000.0)
                     } else {
-                        String.format("%.1fM", user.followingCount / 1000000.0)
+                        String.format("%.1fM", followingCount / 1000000.0)
                     },
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppColors.PRIMARY_FONT_COLOR,

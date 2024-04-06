@@ -28,12 +28,15 @@ import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -57,6 +60,7 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -65,6 +69,7 @@ import com.se2.fabler.R
 import com.se2.fabler.TestDataSource
 import com.se2.fabler.getTestAppModel
 import com.se2.fabler.models.BookData
+import com.se2.fabler.ui.theme.AppColors.Companion.PRIMARY_FONT_COLOR
 
 // Static configuration variables
 val SHELF_HEIGHT = 200f.dp
@@ -91,14 +96,17 @@ fun drawScaledBitmap(
 }
 
 @Composable
-fun DrawHorizontalShelf(scaleFactor: Float = 1.0f, topPadding: Dp = SHELF_HEIGHT - SHELF_WOOD_HEIGHT) {
+fun DrawHorizontalShelf(
+    scaleFactor: Float = 1.0f,
+    topPadding: Dp = SHELF_HEIGHT - SHELF_WOOD_HEIGHT
+) {
     Column(Modifier.padding(0.dp, topPadding, 0.dp, 0.dp)) {
         val shelfLeftImg = ImageBitmap.imageResource(R.drawable.shelf_left)
         val shelfRightImg = ImageBitmap.imageResource(R.drawable.shelf_right)
         val shelfMiddleImg = ImageBitmap.imageResource(R.drawable.shelf_middle)
         ElevatedCard(
             modifier = Modifier
-                .height(SHELF_WOOD_HEIGHT*scaleFactor)
+                .height(SHELF_WOOD_HEIGHT * scaleFactor)
                 .fillMaxWidth()
                 .padding(
                     SHELF_WOOD_PADDING, 0.dp
@@ -111,7 +119,7 @@ fun DrawHorizontalShelf(scaleFactor: Float = 1.0f, topPadding: Dp = SHELF_HEIGHT
         ) {
             Canvas(modifier = Modifier.fillMaxSize()) {
                 val shelfLoc = Offset.Zero
-                val shelfSize = Size(size.width, SHELF_WOOD_HEIGHT.toPx()*scaleFactor)
+                val shelfSize = Size(size.width, SHELF_WOOD_HEIGHT.toPx() * scaleFactor)
                 // Shelf left end
                 drawScaledBitmap(
                     this, shelfLeftImg,
@@ -221,6 +229,7 @@ fun BookShelf(
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     var contextMenuBook by rememberSaveable { mutableStateOf<BookData?>(null) }
+    var showPopup by remember { mutableStateOf(false) }
     val bookSplit = creationList.chunked(3)
     LazyVerticalGrid(
         GridCells.Fixed(1),
@@ -245,9 +254,10 @@ fun BookShelf(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly,
                 ) {
-                    bookSplit[it].forEach { creation -> DrawBook(
-                        creation,
-                        {}) {
+                    bookSplit[it].forEach { creation ->
+                        DrawBook(
+                            creation,
+                            {}) {
                             contextMenuBook = it
                             showBottomSheet = true
                         }
@@ -274,13 +284,17 @@ fun BookShelf(
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     text = "Bookmark",
-                                    style = MaterialTheme.typography.titleLarge
+                                    style = typography.titleLarge
                                 )
                             }
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 10.dp, horizontal = 20.dp)
+                                    .clickable {
+                                        showBottomSheet = false
+                                        showPopup = true
+                                    }
                             ) {
                                 Icon(
                                     imageVector = Icons.Outlined.Info,
@@ -291,30 +305,35 @@ fun BookShelf(
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     text = "Novel Details",
-                                    style = MaterialTheme.typography.titleLarge
+                                    style = typography.titleLarge
                                 )
                             }
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 10.dp, horizontal = 20.dp)
-                                    .clickable {
-                                        showBottomSheet = false
-                                        onSwitchProfile(contextMenuBook!!.authorUserId)
-                                        app.pushView("ProfilePage", contextMenuBook!!.authorUserId)
-                                    }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.PersonPin,
-                                    contentDescription = "View Profile",
-                                    modifier = Modifier.size(32.dp),
-                                    tint = Color.DarkGray
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = "View Profile",
-                                    style = MaterialTheme.typography.titleLarge
-                                )
+                            if (contextMenuBook!!.authorUserId != app.loggedInUserData.user.id) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp, horizontal = 20.dp)
+                                        .clickable {
+                                            showBottomSheet = false
+                                            onSwitchProfile(contextMenuBook!!.authorUserId)
+                                            app.pushView(
+                                                "ProfilePage",
+                                                contextMenuBook!!.authorUserId
+                                            )
+                                        }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.PersonPin,
+                                        contentDescription = "View Profile",
+                                        modifier = Modifier.size(32.dp),
+                                        tint = Color.DarkGray
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = "View Profile",
+                                        style = typography.titleLarge
+                                    )
+                                }
                             }
                             if (contextMenuBook!!.authorUserId == app.loggedInUserData.user.id) {
                                 Row(
@@ -335,7 +354,7 @@ fun BookShelf(
                                         Spacer(modifier = Modifier.width(8.dp))
                                         Text(
                                             text = "Set to Public",
-                                            style = MaterialTheme.typography.titleLarge
+                                            style = typography.titleLarge
                                         )
                                     } else {
                                         Icon(
@@ -347,7 +366,7 @@ fun BookShelf(
                                         Spacer(modifier = Modifier.width(8.dp))
                                         Text(
                                             text = "Set to Only You",
-                                            style = MaterialTheme.typography.titleLarge
+                                            style = typography.titleLarge
                                         )
                                     }
                                 }
@@ -368,12 +387,67 @@ fun BookShelf(
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
                                         text = "Delete Permanently",
-                                        style = MaterialTheme.typography.titleLarge
+                                        style = typography.titleLarge
                                     )
                                 }
                             }
                             Spacer(modifier = Modifier.height(28.dp))
                         }
+                    }
+                    if (showPopup) {
+                        AlertDialog(
+                            onDismissRequest = { showPopup = false },
+                            confirmButton = { /*TODO*/ },
+                            dismissButton = { /*TODO*/ },
+                            icon = {
+                                Row {
+                                    Icon(
+                                        imageVector = Icons.Outlined.Info,
+                                        contentDescription = "Info",
+                                        tint = Color.DarkGray
+                                    )
+                                    Spacer(modifier = Modifier.width(10f.dp))
+                                    Text(
+                                        text = "Novel Details"
+                                    )
+                                }
+                            },
+                            title = {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Text(
+                                        text = contextMenuBook!!.title,
+                                        style = typography.titleLarge
+                                    )
+                                    Text(
+                                        text = "@${contextMenuBook!!.author}",
+                                        style = typography.titleMedium,
+                                        color = PRIMARY_FONT_COLOR
+                                    )
+                                }
+                            },
+                            text = {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Box(modifier = Modifier.height(200.dp)) {
+                                        DrawBook(book = contextMenuBook!!, onSelectBook = {}, {})
+                                    }
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    Text(
+                                        text = contextMenuBook!!.genre,
+                                        style = typography.titleMedium,
+                                        color = Color.Gray,
+                                        textAlign = TextAlign.Center
+                                    )
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    HorizontalDivider()
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    Text(
+                                        text = contextMenuBook!!.description,
+                                        style = typography.bodyLarge
+                                    )
+                                }
+
+                            }
+                        )
                     }
                 }
             }

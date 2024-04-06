@@ -9,7 +9,7 @@ class TestDataSource {
         get() {
             return listOf(
                 BookData(
-                    0, "Fortune Killer", R.drawable.bg1, "demigod3ss", 6538, "Crime",
+                    0, "Fortune Killer", R.drawable.bg1, "bja", 2, "Crime",
                     "Jaxen’s got a secret past that threatens to bring down the school’s whole social order – and much more.",
                     true, 4, true
                 ),
@@ -262,17 +262,27 @@ class TestDataSource {
                 name = "Jaxen",
                 email = "jaxdutta@gmail.com",
                 username = "jaxdutta",
-                profileImageResId = R.drawable.cat_1000,
-                followerCount = 284762,
-                followingCount = 38762237,
+                profileImageResId = R.drawable.sample_pfp,
+                followerList = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+                    22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+                    46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69,
+                    70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93,
+                    94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114,
+                    115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134,
+                    135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154,
+                    155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174,
+                    175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185),
+                followingList = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21),
                 bookmarkPrivacy = true,
-                about = "I am a writer kufkfj\n" +
-                        "jtfkg\n" +
-                        "jtdf",
+                about = "I am a writer\n" +
+                        "sometimes\n" +
+                        "haha",
                 location = "New York",
                 joined = "2021-10-10",
                 following = true,
-                isFollowing = false
+                isFollowing = false,
+                creationList = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20),
+                bookmarkList = listOf(1, 2, 3, 4, 5, 6, 7, 14, 15, 16, 17, 18, 19, 20)
             )
         }
     val otheruser: UserData
@@ -282,15 +292,24 @@ class TestDataSource {
                 name = "Bob Joe Alice",
                 email = "bobjoealice",
                 username = "bja",
-                profileImageResId = R.drawable.cat_1000,
-                followerCount = 262,
-                followingCount = 3877,
+                profileImageResId = R.drawable.sample_pfp,
+                followerList = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+                    26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
+                    50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73,
+                    74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97,
+                    98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117,
+                    118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137,
+                    138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157,
+                    158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177),
+                followingList = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21),
                 bookmarkPrivacy = true,
                 about = "DO NOT talk to me!!! >:((",
                 location = "New Hampshire",
                 joined = "2021-20-10",
                 following = true,
-                isFollowing = false
+                isFollowing = false,
+                creationList = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20),
+                bookmarkList = listOf(1, 2, 3, 4, 5, 6, 7, 14, 15, 16, 17, 18, 19, 20)
             )
         }
 }
