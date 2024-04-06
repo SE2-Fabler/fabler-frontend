@@ -36,6 +36,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -95,7 +96,10 @@ fun drawScaledBitmap(
 }
 
 @Composable
-fun DrawHorizontalShelf(scaleFactor: Float = 1.0f, topPadding: Dp = SHELF_HEIGHT - SHELF_WOOD_HEIGHT) {
+fun DrawHorizontalShelf(
+    scaleFactor: Float = 1.0f,
+    topPadding: Dp = SHELF_HEIGHT - SHELF_WOOD_HEIGHT
+) {
     Column(Modifier.padding(0.dp, topPadding, 0.dp, 0.dp)) {
         val shelfLeftImg = ImageBitmap.imageResource(R.drawable.shelf_left)
         val shelfRightImg = ImageBitmap.imageResource(R.drawable.shelf_right)
@@ -115,7 +119,7 @@ fun DrawHorizontalShelf(scaleFactor: Float = 1.0f, topPadding: Dp = SHELF_HEIGHT
         ) {
             Canvas(modifier = Modifier.fillMaxSize()) {
                 val shelfLoc = Offset.Zero
-                val shelfSize = Size(size.width, SHELF_WOOD_HEIGHT.toPx()*scaleFactor)
+                val shelfSize = Size(size.width, SHELF_WOOD_HEIGHT.toPx() * scaleFactor)
                 // Shelf left end
                 drawScaledBitmap(
                     this, shelfLeftImg,
@@ -250,9 +254,10 @@ fun BookShelf(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly,
                 ) {
-                    bookSplit[it].forEach { creation -> DrawBook(
-                        creation,
-                        {}) {
+                    bookSplit[it].forEach { creation ->
+                        DrawBook(
+                            creation,
+                            {}) {
                             contextMenuBook = it
                             showBottomSheet = true
                         }
@@ -279,7 +284,7 @@ fun BookShelf(
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     text = "Bookmark",
-                                    style = MaterialTheme.typography.titleLarge
+                                    style = typography.titleLarge
                                 )
                             }
                             Row(
@@ -300,30 +305,35 @@ fun BookShelf(
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     text = "Novel Details",
-                                    style = MaterialTheme.typography.titleLarge
+                                    style = typography.titleLarge
                                 )
                             }
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 10.dp, horizontal = 20.dp)
-                                    .clickable {
-                                        showBottomSheet = false
-                                        onSwitchProfile(contextMenuBook!!.authorUserId)
-                                        app.pushView("ProfilePage", contextMenuBook!!.authorUserId)
-                                    }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.PersonPin,
-                                    contentDescription = "View Profile",
-                                    modifier = Modifier.size(32.dp),
-                                    tint = Color.DarkGray
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = "View Profile",
-                                    style = MaterialTheme.typography.titleLarge
-                                )
+                            if (contextMenuBook!!.authorUserId != app.loggedInUserData.user.id) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp, horizontal = 20.dp)
+                                        .clickable {
+                                            showBottomSheet = false
+                                            onSwitchProfile(contextMenuBook!!.authorUserId)
+                                            app.pushView(
+                                                "ProfilePage",
+                                                contextMenuBook!!.authorUserId
+                                            )
+                                        }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.PersonPin,
+                                        contentDescription = "View Profile",
+                                        modifier = Modifier.size(32.dp),
+                                        tint = Color.DarkGray
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = "View Profile",
+                                        style = typography.titleLarge
+                                    )
+                                }
                             }
                             if (contextMenuBook!!.authorUserId == app.loggedInUserData.user.id) {
                                 Row(
@@ -344,7 +354,7 @@ fun BookShelf(
                                         Spacer(modifier = Modifier.width(8.dp))
                                         Text(
                                             text = "Set to Public",
-                                            style = MaterialTheme.typography.titleLarge
+                                            style = typography.titleLarge
                                         )
                                     } else {
                                         Icon(
@@ -356,7 +366,7 @@ fun BookShelf(
                                         Spacer(modifier = Modifier.width(8.dp))
                                         Text(
                                             text = "Set to Only You",
-                                            style = MaterialTheme.typography.titleLarge
+                                            style = typography.titleLarge
                                         )
                                     }
                                 }
@@ -377,7 +387,7 @@ fun BookShelf(
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
                                         text = "Delete Permanently",
-                                        style = MaterialTheme.typography.titleLarge
+                                        style = typography.titleLarge
                                     )
                                 }
                             }
@@ -390,34 +400,40 @@ fun BookShelf(
                             confirmButton = { /*TODO*/ },
                             dismissButton = { /*TODO*/ },
                             icon = {
-                                Icon(
-                                    imageVector = Icons.Outlined.Info,
-                                    contentDescription = "Info",
-                                    tint = Color.DarkGray
-                                )
+                                Row {
+                                    Icon(
+                                        imageVector = Icons.Outlined.Info,
+                                        contentDescription = "Info",
+                                        tint = Color.DarkGray
+                                    )
+                                    Spacer(modifier = Modifier.width(10f.dp))
+                                    Text(
+                                        text = "Novel Details"
+                                    )
+                                }
                             },
                             title = {
-                                Text(
-                                    text = "Novel Details",
-                                    style = MaterialTheme.typography.titleLarge
-                                )
-                            },
-                            text = {
-                                Column {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                     Text(
                                         text = contextMenuBook!!.title,
-                                        style = MaterialTheme.typography.titleLarge,
-                                        textAlign = TextAlign.Center
+                                        style = typography.titleLarge
                                     )
                                     Text(
                                         text = "@${contextMenuBook!!.author}",
-                                        style = MaterialTheme.typography.titleMedium,
-                                        color = PRIMARY_FONT_COLOR,
-                                        textAlign = TextAlign.Center
+                                        style = typography.titleMedium,
+                                        color = PRIMARY_FONT_COLOR
                                     )
+                                }
+                            },
+                            text = {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Box(modifier = Modifier.height(200.dp)) {
+                                        DrawBook(book = contextMenuBook!!, onSelectBook = {}, {})
+                                    }
+                                    Spacer(modifier = Modifier.height(10.dp))
                                     Text(
                                         text = contextMenuBook!!.genre,
-                                        style = MaterialTheme.typography.titleMedium,
+                                        style = typography.titleMedium,
                                         color = Color.Gray,
                                         textAlign = TextAlign.Center
                                     )
@@ -426,7 +442,7 @@ fun BookShelf(
                                     Spacer(modifier = Modifier.height(10.dp))
                                     Text(
                                         text = contextMenuBook!!.description,
-                                        style = MaterialTheme.typography.bodyLarge
+                                        style = typography.bodyLarge
                                     )
                                 }
 

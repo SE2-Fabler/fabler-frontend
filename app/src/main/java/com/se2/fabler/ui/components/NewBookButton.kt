@@ -36,7 +36,7 @@ fun NewBookButton() {
     if (showDialog.value) {
         AlertDialog(
             onDismissRequest = { showDialog.value = false },
-            title = { Text("Create New Book") },
+            title = { Text("Create New Visual Novel") },
             text = {
                 Column(Modifier.navigationBarsWithImePadding()) {
                     OutlinedTextField(
