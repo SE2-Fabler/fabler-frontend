@@ -11,7 +11,9 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.se2.fabler.models.BookData
 import com.se2.fabler.models.UserData
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import java.io.IOException
 
 // FIXME: Change this, this is just for testing!
@@ -56,7 +58,9 @@ class BookSearchPagingSource(private val service: IFablerService, private val qu
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, BookData> {
         val position = params.key ?: 0
         return try {
-            val response = service.searchBooks(query, position, params.loadSize)
+            Log.d("dbg", "reached")
+            val response = withContext(IO) { service.searchBooks(query, position, params.loadSize) }
+            Log.d("dbg", response.toString())
             val nextKey = if (response.isEmpty()) {
                 null
             } else {
@@ -88,7 +92,7 @@ class UserSearchPagingSource(private val service: IFablerService, private val qu
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UserData> {
         val position = params.key ?: 0
         return try {
-            val response = service.searchUsers(query, position, params.loadSize)
+            val response = withContext(IO) { service.searchUsers(query, position, params.loadSize) }
             val nextKey = if (response.isEmpty()) {
                 null
             } else {

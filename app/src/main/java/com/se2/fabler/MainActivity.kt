@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.se2.fabler.api.HttpFablerService
 import com.se2.fabler.ui.pages.HomePage
 import com.se2.fabler.ui.pages.ProfilePage
 import com.se2.fabler.ui.pages.SearchPage
@@ -17,8 +18,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // TODO: This is a placeholder for the actual app model
-        val appModel = getTestAppModel()
-        // val appModel = AppModel(getTestAppModel().loggedInUserData, HttpFablerService())
+        //val appModel = getTestAppModel()
+        val appModel = AppModel(getTestAppModel().loggedInUserData, HttpFablerService())
         appModel.pushView("SignInPage")
         setContent {
             FablerTheme {

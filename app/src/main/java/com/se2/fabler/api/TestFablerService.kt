@@ -24,7 +24,7 @@ class TestFablerService : IFablerService {
         }
     }
 
-    override fun searchUsers(query: String, page: Int, itemsPerPage: Int): List<UserData> {
+    override suspend fun searchUsers(query: String, page: Int, itemsPerPage: Int): List<UserData> {
         // Delay for 2 second to simulate network request
         Thread.sleep(1000)
         return if (page < 10) {
