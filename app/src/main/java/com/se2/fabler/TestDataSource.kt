@@ -1,5 +1,6 @@
 package com.se2.fabler
 
+import com.se2.fabler.api.TestFablerService
 import com.se2.fabler.models.BookData
 import com.se2.fabler.models.UserData
 import com.se2.fabler.models.UserDataAll
@@ -10,7 +11,7 @@ class TestDataSource {
             return listOf(
                 BookData(
                     0, "Fortune Killer", R.drawable.bg1, "bja", 2, "Crime",
-                    "Jaxen’s got a secret past that threatens to bring down the school’s whole social order – and much more.",
+                    "Nobody paid much attention to Jaxen – just a normal teenager at a high school where the social elite happen to possess unthinkable powers and abilities. But Jaxen’s got a secret past that threatens to bring down the school’s whole social order – and much more. Fulfilling his destiny won’t be easy though, because there are battles, frenemies and deadly conspiracies around every corner.",
                     true, 4, true
                 ),
                 BookData(
@@ -316,5 +317,5 @@ class TestDataSource {
 
 fun getTestAppModel(): AppModel {
     val tds = TestDataSource()
-    return AppModel(UserDataAll(tds.userdata, tds.books, tds.books))
+    return AppModel(UserDataAll(tds.userdata, tds.books, tds.books), TestFablerService())
 }

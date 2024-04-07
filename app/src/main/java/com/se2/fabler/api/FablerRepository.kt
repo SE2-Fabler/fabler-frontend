@@ -18,7 +18,7 @@ import java.io.IOException
 private const val PAGE_SIZE_BOOK = 3
 private const val PAGE_SIZE_USER = 3
 
-class FablerRepository(private val service: FablerService) {
+class FablerRepository(private val service: IFablerService) {
     fun getBookSearchResultStream(query: String): Flow<PagingData<BookData>> {
         Log.d("FablerRepository", "New book query: $query")
         return Pager(
@@ -43,7 +43,7 @@ class FablerRepository(private val service: FablerService) {
 }
 
 // https://medium.com/androiddevelopers/introduction-to-paging-3-0-in-the-mad-skills-series-648f77231121
-class BookSearchPagingSource(private val service: FablerService, private val query: String) :
+class BookSearchPagingSource(private val service: IFablerService, private val query: String) :
     PagingSource<Int, BookData>() {
     override fun getRefreshKey(state: PagingState<Int, BookData>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -75,7 +75,7 @@ class BookSearchPagingSource(private val service: FablerService, private val que
     }
 }
 
-class UserSearchPagingSource(private val service: FablerService, private val query: String) :
+class UserSearchPagingSource(private val service: IFablerService, private val query: String) :
     PagingSource<Int, UserData>() {
     override fun getRefreshKey(state: PagingState<Int, UserData>): Int? {
         return state.anchorPosition?.let { anchorPosition ->

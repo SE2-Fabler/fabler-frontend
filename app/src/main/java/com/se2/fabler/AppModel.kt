@@ -2,13 +2,15 @@ package com.se2.fabler
 
 import androidx.compose.runtime.mutableStateOf
 import com.se2.fabler.api.FablerRepository
-import com.se2.fabler.api.FablerService
+import com.se2.fabler.api.IFablerService
 import com.se2.fabler.models.UserDataAll
 
 class AppModel(
     // Logged in user's data
     // FIXME: Currently there's no way to refresh this!
-    var loggedInUserData: UserDataAll
+    var loggedInUserData: UserDataAll,
+    // Service to use
+    val service: IFablerService
 ) {
     /* ===------------------------------------------------------------------------------------=== */
     // Navigation stack implementation
@@ -48,6 +50,5 @@ class AppModel(
     // Fabler API service and data repository adapter
     /* ===------------------------------------------------------------------------------------=== */
 
-    val service: FablerService = FablerService()
     val repository: FablerRepository = FablerRepository(service)
 }

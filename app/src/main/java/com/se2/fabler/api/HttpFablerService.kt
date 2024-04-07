@@ -15,12 +15,12 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 
-class FablerService {
-    val serverurl = "http://10.0.0.178:5000/";
-    var client = OkHttpClient();
+class HttpFablerService : IFablerService {
+    val serverurl = "http://10.0.0.178:5000/"
+    var client = OkHttpClient()
     private val dataSource: TestDataSource = TestDataSource()
 
-    fun searchBooks(query: String, page: Int, itemsPerPage: Int): List<BookData> {
+    override fun searchBooks(query: String, page: Int, itemsPerPage: Int): List<BookData> {
         // Delay for 1 second to simulate network request
         println("reached")
         println(query)
@@ -60,7 +60,7 @@ class FablerService {
         }
     }
 
-    fun searchUsers(query: String, page: Int, itemsPerPage: Int): List<UserData> {
+    override fun searchUsers(query: String, page: Int, itemsPerPage: Int): List<UserData> {
         // Delay for 2 second to simulate network request
         Thread.sleep(1000)
         return if (page < 10) {
@@ -70,17 +70,17 @@ class FablerService {
         }
     }
 
-    fun getUserDataAll(userId: Int): UserDataAll {
+    override fun getUserDataAll(userId: Int): UserDataAll {
         // Delay for 1 second to simulate network request
         Thread.sleep(1000)
-        Log.d("FablerService", "getUserDataAll: $userId")
+        Log.d("HttpFablerService", "getUserDataAll: $userId")
         return if(userId == 1)
             UserDataAll(dataSource.userdata, dataSource.books, dataSource.books)
         else
             UserDataAll(dataSource.otheruser, dataSource.books, dataSource.books)
     }
 
-    fun authUser(credential: CredentialsData): UserData? {
+    override fun authUser(credential: CredentialsData): UserData? {
         // Delay for 1 second to simulate network request
         Thread.sleep(1000)
         return if(dataSource.userdata.username == credential.username)

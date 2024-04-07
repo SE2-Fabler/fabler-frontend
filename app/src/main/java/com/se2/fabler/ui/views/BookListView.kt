@@ -2,9 +2,7 @@ package com.se2.fabler.ui.views
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,38 +16,24 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PersonPin
 import androidx.compose.material.icons.outlined.Bookmark
-import androidx.compose.material.icons.outlined.BookmarkAdd
-import androidx.compose.material.icons.outlined.DeleteForever
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Visibility
-import androidx.compose.material.icons.outlined.VisibilityOff
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -60,6 +44,8 @@ import com.se2.fabler.AppModel
 import com.se2.fabler.TestDataSource
 import com.se2.fabler.getTestAppModel
 import com.se2.fabler.models.BookData
+import com.se2.fabler.ui.components.BookBottomSheet
+import com.se2.fabler.ui.components.BookBottomSheetState
 import com.se2.fabler.ui.components.DrawBook
 import com.se2.fabler.ui.theme.AppColors
 import kotlinx.coroutines.flow.flowOf
@@ -132,16 +118,12 @@ private fun DrawBookItem(
     } // End of ElevatedCard
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookListView(
     lazyBookData: LazyPagingItems<BookData>, app: AppModel,
     onSwitchProfile: (Int) -> Unit = {}
 ) {
-    val sheetState = rememberModalBottomSheetState()
-    var showBottomSheet by remember { mutableStateOf(false) }
-    var contextMenuBook by rememberSaveable { mutableStateOf<BookData?>(null) }
-    var showPopup by remember { mutableStateOf(false) }
+    val state by remember { mutableStateOf(BookBottomSheetState()) }
 
     Column(
         modifier = Modifier
@@ -165,198 +147,15 @@ fun BookListView(
                     // app.pushView("BookPage")
                     }
                 ) {
-                    contextMenuBook = it
-                    showBottomSheet = true
+                    state.currentBookData = it
+                    state.bottomSheetVisible.value = true
                 }
             }
             item {
                 Spacer(modifier = Modifier.height(25.dp))
             }
         }
-        if (showBottomSheet) {
-            ModalBottomSheet(
-                onDismissRequest = { showBottomSheet = false },
-                sheetState = sheetState
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp, horizontal = 20.dp)
-                        .clickable {
-                            // On bookmark click
-                        }
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.BookmarkAdd,
-                        contentDescription = "Bookmark",
-                        modifier = Modifier.size(32.dp),
-                        tint = Color.DarkGray
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Bookmark",
-                        style = typography.titleLarge
-                    )
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp, horizontal = 20.dp)
-                        .clickable {
-                            showBottomSheet = false
-                            showPopup = true
-                        }
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Info,
-                        contentDescription = "Info",
-                        modifier = Modifier.size(32.dp),
-                        tint = Color.DarkGray
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Novel Details",
-                        style = typography.titleLarge
-                    )
-                }
-                if (contextMenuBook!!.authorUserId != app.loggedInUserData.user.id) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 10.dp, horizontal = 20.dp)
-                            .clickable {
-                                showBottomSheet = false
-                                onSwitchProfile(contextMenuBook!!.authorUserId)
-                                app.pushView("ProfilePage", contextMenuBook!!.authorUserId)
-                            }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.PersonPin,
-                            contentDescription = "View Profile",
-                            modifier = Modifier.size(32.dp),
-                            tint = Color.DarkGray
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "View Profile",
-                            style = typography.titleLarge
-                        )
-                    }
-                }
-                if (contextMenuBook!!.authorUserId == app.loggedInUserData.user.id) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 10.dp, horizontal = 20.dp)
-                            .clickable {
-                                // TODO: Toggle Privacy
-                            }
-                    ) {
-                        if (contextMenuBook!!.private) {
-                            Icon(
-                                imageVector = Icons.Outlined.Visibility,
-                                contentDescription = "Make Public",
-                                modifier = Modifier.size(32.dp),
-                                tint = Color.DarkGray
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = "Set to Public",
-                                style = typography.titleLarge
-                            )
-                        } else {
-                            Icon(
-                                imageVector = Icons.Outlined.VisibilityOff,
-                                contentDescription = "Turn On Privacy",
-                                modifier = Modifier.size(32.dp),
-                                tint = Color.DarkGray
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = "Set to Only You",
-                                style = typography.titleLarge
-                            )
-                        }
-                    }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 10.dp, horizontal = 20.dp)
-                            .clickable {
-                                // TODO: Delete book since user is the author
-                            }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.DeleteForever,
-                            contentDescription = "Delete Book",
-                            modifier = Modifier.size(32.dp),
-                            tint = Color.DarkGray
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Delete Permanently",
-                            style = typography.titleLarge
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(28.dp))
-            }
-        }
-        if (showPopup) {
-            AlertDialog(
-                onDismissRequest = { showPopup = false },
-                confirmButton = { /*TODO*/ },
-                dismissButton = { /*TODO*/ },
-                icon = {
-                    Row {
-                        Icon(
-                            imageVector = Icons.Outlined.Info,
-                            contentDescription = "Info",
-                            tint = Color.DarkGray
-                        )
-                        Spacer(modifier = Modifier.width(10f.dp))
-                        Text(
-                            text = "Novel Details"
-                        )
-                    }
-                },
-                title = {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = contextMenuBook!!.title,
-                            style = typography.titleLarge
-                        )
-                        Text(
-                            text = "@${contextMenuBook!!.author}",
-                            style = typography.titleMedium,
-                            color = AppColors.PRIMARY_FONT_COLOR
-                        )
-                    }
-                },
-                text = {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Box(modifier = Modifier.height(200.dp)) {
-                            DrawBook(book = contextMenuBook!!, onSelectBook = {}, {})
-                        }
-                        Spacer(modifier = Modifier.height(10.dp))
-                        Text(
-                            text = contextMenuBook!!.genre,
-                            style = typography.titleMedium,
-                            color = Color.Gray,
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
-                        HorizontalDivider()
-                        Spacer(modifier = Modifier.height(10.dp))
-                        Text(
-                            text = contextMenuBook!!.description,
-                            style = typography.bodyLarge
-                        )
-                    }
-
-                }
-            )
-        }
+        BookBottomSheet(app, state, onSwitchProfile)
     }
 }
 
