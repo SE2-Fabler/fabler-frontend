@@ -34,7 +34,7 @@ fun ProfilePage(app: AppModel) {
     val lazyBookmarks = flowOf(PagingData.from(allUserData.bookmarks)).collectAsLazyPagingItems()
     Box {
         Column {
-            ProfileHeader(allUserData.user, isCurrentUser, {
+            ProfileHeader(allUserData.user, isCurrentUser, app, {
                 app.popView()
                 if(app.currentViewData is Int) {
                     userToDisplayId = app.currentViewData as Int
@@ -65,5 +65,7 @@ fun ProfilePage(app: AppModel) {
 @Composable
 @Preview(showBackground = true)
 private fun PreviewProfilePage() {
-    ProfilePage(getTestAppModel())
+    val app = getTestAppModel()
+    app.pushView("ProfilePage", 2)
+    Column { ProfilePage(app) }
 }

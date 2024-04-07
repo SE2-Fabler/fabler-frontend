@@ -54,10 +54,10 @@ class TestFablerService : IFablerService {
     }
 
     override fun getFollowers(userId: Int, page: Int, itemsPerPage: Int): List<UserData> {
-        TODO("Not yet implemented")
+        return(listOf(dataSource.userdata, dataSource.otheruser))
     }
 
     override fun getFollowing(userId: Int, page: Int, itemsPerPage: Int): List<UserData> {
-        TODO("Not yet implemented")
+        return(listOf(dataSource.userdata, dataSource.otheruser))
     }
 }

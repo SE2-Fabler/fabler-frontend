@@ -42,6 +42,17 @@ class FablerRepository(private val service: IFablerService) {
             pagingSourceFactory = { UserSearchPagingSource(service, query) }
         ).flow
     }
+
+    fun getFollowersResultStream(userId: Int, followers: Boolean): Flow<PagingData<UserData>> {
+        Log.d("FablerRepository", "New followers list query")
+        return Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE_USER,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { FollowersPagingSource(service, userId, followers) }
+        ).flow
+    }
 }
 
 // https://medium.com/androiddevelopers/introduction-to-paging-3-0-in-the-mad-skills-series-648f77231121
@@ -93,6 +104,43 @@ class UserSearchPagingSource(private val service: IFablerService, private val qu
         val position = params.key ?: 0
         return try {
             val response = withContext(IO) { service.searchUsers(query, position, params.loadSize) }
+            val nextKey = if (response.isEmpty()) {
+                null
+            } else {
+                position + params.loadSize / PAGE_SIZE_USER
+            }
+            LoadResult.Page(
+                data = response,
+                prevKey = if (position == 0) null else position - 1,
+                nextKey = nextKey
+            )
+        } catch (exception: IOException) {
+            LoadResult.Error(exception)
+        } catch (exception: HttpException) {
+            LoadResult.Error(exception)
+        }
+    }
+}
+
+// This class provides pagination  services for both the followers and following lists
+class FollowersPagingSource(private val service: IFablerService, private val userId: Int, private val queryFollowing: Boolean = false) :
+    PagingSource<Int, UserData>() {
+    override fun getRefreshKey(state: PagingState<Int, UserData>): Int? {
+        return state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+        }
+    }
+
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UserData> {
+        val position = params.key ?: 0
+        return try {
+            val response = if(queryFollowing) {
+                service.getFollowing(userId, position, params.loadSize)
+            } else {
+                service.getFollowers(userId, position, params.loadSize)
+            }
             val nextKey = if (response.isEmpty()) {
                 null
             } else {

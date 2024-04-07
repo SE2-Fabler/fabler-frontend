@@ -145,7 +145,7 @@ private fun BottomSheetOptions(
     onSwitchProfile: (Int) -> Unit = {}
 ) {
     val contextMenuBook = state.currentBookData!!
-    if (app.loggedInUserData.user.bookmarkList.contains(contextMenuBook.id)) {
+    if (/* TODO: check if book is bookmarked */ true) {
         BottomSheetRow(
             "Remove Bookmark",
             Icons.Outlined.BookmarkRemove

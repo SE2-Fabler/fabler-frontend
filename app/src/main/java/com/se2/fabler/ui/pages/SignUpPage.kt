@@ -37,6 +37,7 @@ import com.se2.fabler.AppModel
 import com.se2.fabler.R
 import com.se2.fabler.getTestAppModel
 import com.se2.fabler.models.SignUpData
+import com.se2.fabler.ui.components.FormTextField
 
 @SuppressLint("RememberReturnType")
 @Composable
@@ -67,7 +68,7 @@ fun SignUpPage(app: AppModel) {
                     .clip(RoundedCornerShape(15.dp))
             )
             Spacer(modifier = Modifier.height(55.dp))
-            LoginField(
+            FormTextField(
                 value = signUpData.value.name,
                 onChange = { data -> signUpData.value = signUpData.value.copy(name = data) },
                 modifier = Modifier.fillMaxWidth()
@@ -76,7 +77,7 @@ fun SignUpPage(app: AppModel) {
                 label = "Name",
                 icon = Icons.Outlined.AccountCircle
             )
-            LoginField(
+            FormTextField(
                 value = signUpData.value.username,
                 onChange = { data -> signUpData.value = signUpData.value.copy(username = data) },
                 modifier = Modifier.fillMaxWidth()
@@ -85,7 +86,7 @@ fun SignUpPage(app: AppModel) {
                 label = "Username",
                 icon = Icons.Default.AlternateEmail
             )
-            LoginField(
+            FormTextField(
                 value = signUpData.value.email,
                 onChange = { data -> signUpData.value = signUpData.value.copy(email = data) },
                 modifier = Modifier.fillMaxWidth()
@@ -115,9 +116,9 @@ fun SignUpPage(app: AppModel) {
             Button(
                 onClick = {
                     if (signUpData.value.password == signUpData.value.confirmPassword) {
-                        // Passwords match, proceed with sign up
+                        // TODO: Passwords match, proceed with sign up
                     } else {
-                        // Passwords do not match, show an error message
+                        // TODO: Passwords do not match, show an error message
                     }
                 },
                 enabled = signUpData.value.isNotEmpty(),

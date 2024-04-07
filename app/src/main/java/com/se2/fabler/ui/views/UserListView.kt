@@ -127,7 +127,7 @@ fun UserListView(lazyUserData: LazyPagingItems<UserData>, onSelectUser: (UserDat
                         "Following",
                         Icons.Default.PersonAdd,
                         Icons.Default.PersonRemove,
-                        user.following
+                        user.imFollowing
                     )
                 }
                 HorizontalDivider()

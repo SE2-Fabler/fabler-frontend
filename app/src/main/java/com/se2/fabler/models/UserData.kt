@@ -6,14 +6,12 @@ data class UserData(
     val email: String,
     val username: String,
     val profileImageResId: Int,
-    val followerList: List<Int>,
-    val followingList: List<Int>,
+    val followers: Int,
+    val following: Int,
     val bookmarkPrivacy: Boolean,
     val about: String,
     val location: String,
     val joined: String,
-    val following: Boolean,
-    val isFollowing: Boolean,
-    val creationList: List<Int>,
-    val bookmarkList: List<Int>,
+    val imFollowing: Boolean,
+    val isFollowing: Boolean
 )

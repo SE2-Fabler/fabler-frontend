@@ -33,7 +33,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import com.se2.fabler.AppModel
 import com.se2.fabler.TestDataSource
+import com.se2.fabler.getTestAppModel
 import com.se2.fabler.models.UserData
 import com.se2.fabler.ui.theme.AppColors
 import com.se2.fabler.ui.theme.AppColors.Companion.SECONDARY_COLOR
@@ -44,6 +46,7 @@ import com.se2.fabler.ui.views.DrawUser
 fun ProfileHeader(
     user: UserData,
     displaySettingIcon: Boolean,
+    app: AppModel,
     onBackClick: () -> Unit,
     onSettingsClick: () -> Unit
 ) {
@@ -115,7 +118,7 @@ fun ProfileHeader(
                                     "Following",
                                     Icons.Default.PersonAdd,
                                     Icons.Default.PersonRemove,
-                                    user.following
+                                    user.imFollowing
                                 )
                                 if (user.isFollowing or true) {
                                     Text(
@@ -157,8 +160,12 @@ fun ProfileHeader(
                 )
             }
             Spacer(modifier = Modifier.height(5.dp))
-            Row {
-                val followerCount = user.followerList.size
+            Row (
+                modifier = Modifier.clickable {
+                    app.pushView("FollowPage", user.id)
+                }
+            ) {
+                val followerCount = user.followers
                 Text(
                     text = if (followerCount < 1000) {
                         "${followerCount}"
@@ -177,7 +184,7 @@ fun ProfileHeader(
                     color = AppColors.PRIMARY_FONT_COLOR
                 )
                 Spacer(modifier = Modifier.width(10.dp))
-                val followingCount = user.followingList.size
+                val followingCount = user.following
                 Text(
                     text = if (followingCount < 1000) {
                         "${followingCount}"
@@ -211,8 +218,8 @@ fun ProfileHeader(
     }
 }
 
-@Preview(showBackground = true)
 @Composable
+@Preview(showBackground = true)
 private fun PreviewProfileHeader() {
-    ProfileHeader(TestDataSource().userdata, true, {}, {})
+    ProfileHeader(TestDataSource().userdata, true, getTestAppModel(), {}, {})
 }

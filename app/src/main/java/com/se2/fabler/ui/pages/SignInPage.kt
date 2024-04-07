@@ -37,12 +37,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -55,38 +52,7 @@ import com.se2.fabler.AppModel
 import com.se2.fabler.R
 import com.se2.fabler.getTestAppModel
 import com.se2.fabler.models.CredentialsData
-
-@Composable
-fun LoginField(
-    value: String,
-    onChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    label: String,
-    placeholder: String = "Enter your $label",
-    icon: ImageVector
-) {
-    val focusManager = LocalFocusManager.current
-    val leadingIcon = @Composable {
-        Icon(
-            imageVector = icon,
-            contentDescription = ""
-        )
-    }
-    TextField(
-        value = value,
-        onValueChange = onChange,
-        modifier = modifier,
-        leadingIcon = leadingIcon,
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-        keyboardActions = KeyboardActions(
-            onNext = { focusManager.moveFocus(FocusDirection.Down) }
-        ),
-        placeholder = { Text(placeholder) },
-        label = { Text(label) },
-        singleLine = true,
-        visualTransformation = VisualTransformation.None
-    )
-}
+import com.se2.fabler.ui.components.FormTextField
 
 @Composable
 fun PasswordField(
@@ -176,7 +142,7 @@ fun SignInPage(app: AppModel) {
                     .clip(RoundedCornerShape(15.dp))
             )
             Spacer(modifier = Modifier.height(200.dp))
-            LoginField(
+            FormTextField(
                 value = credentialsData.value.username,
                 onChange = { data -> credentialsData.value = credentialsData.value.copy(username = data) },
                 modifier = Modifier.fillMaxWidth()
