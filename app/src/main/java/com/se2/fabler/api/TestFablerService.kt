@@ -6,13 +6,17 @@ import com.se2.fabler.models.BookData
 import com.se2.fabler.models.CredentialsData
 import com.se2.fabler.models.UserData
 import com.se2.fabler.models.UserDataAll
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class TestFablerService : IFablerService {
     private val dataSource: TestDataSource = TestDataSource()
 
-    override fun searchBooks(query: String, page: Int, itemsPerPage: Int): List<BookData> {
+    override suspend fun searchBooks(query: String, page: Int, itemsPerPage: Int): List<BookData> {
         // Delay for 2 second to simulate network request
-        Thread.sleep(1000)
+        withContext(Dispatchers.IO) {
+            Thread.sleep(1000)
+        }
         return if (page < 10) {
             List(itemsPerPage) { dataSource.books[0] }
         } else {
@@ -47,5 +51,13 @@ class TestFablerService : IFablerService {
             dataSource.userdata
         else
             null
+    }
+
+    override fun getFollowers(userId: Int, page: Int, itemsPerPage: Int): List<UserData> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getFollowing(userId: Int, page: Int, itemsPerPage: Int): List<UserData> {
+        TODO("Not yet implemented")
     }
 }
