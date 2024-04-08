@@ -34,3 +34,9 @@
 | Tabouguia, Kevin | [ktabougu](ktabougu@uwaterloo.ca) | [ktabouguia](https://github.com/ktabouguia) |
 | Tao, Frank | [f5tao](f5tao@uwaterloo.ca) | [onyasumi](https://github.com/onyasumi)|
 | Wang, Eric | [e74wang](e74wang@uwaterloo.ca) | [freegamenocomplain](https://github.com/freegamenocomplain) |
+
+## Other Repos
+
+[Backend](https://github.com/SE2-Fabler/fabler-backend)
+
+[AI Generation](https://github.com/SE2-Fabler/fabler-ai-generation)
