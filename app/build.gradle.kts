@@ -61,6 +61,7 @@ dependencies {
     implementation("androidx.paging:paging-compose:3.2.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("ru.gildor.coroutines:kotlin-coroutines-okhttp:1.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1-Beta")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("androidx.privacysandbox.tools:tools-core:1.0.0-alpha08")
     testImplementation("junit:junit:4.13.2")

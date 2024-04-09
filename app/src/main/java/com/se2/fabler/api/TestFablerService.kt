@@ -44,7 +44,7 @@ class TestFablerService : IFablerService {
             UserDataAll(dataSource.otheruser, dataSource.books, dataSource.books)
     }
 
-    override fun authUser(credential: CredentialsData): UserData? {
+    override suspend fun authUser(credential: CredentialsData): UserData? {
         // Delay for 1 second to simulate network request
         Thread.sleep(1000)
         return if(dataSource.userdata.username == credential.username)

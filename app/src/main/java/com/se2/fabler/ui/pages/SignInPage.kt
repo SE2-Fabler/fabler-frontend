@@ -53,6 +53,12 @@ import com.se2.fabler.R
 import com.se2.fabler.getTestAppModel
 import com.se2.fabler.models.CredentialsData
 import com.se2.fabler.ui.components.FormTextField
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun PasswordField(
@@ -101,7 +107,7 @@ fun PasswordField(
 }
 
 fun checkCredentials(credentials: CredentialsData, context: Context, app: AppModel): Boolean {
-    val token = app.service.authUser(credentials)
+    val token = runBlocking { withContext(Dispatchers.IO){ app.service.authUser(credentials) }}
     return if (credentials.isNotEmpty() && token != null) {
         app.loggedInUserData = app.service.getUserDataAll(token.id)
         app.pushView("HomePage")

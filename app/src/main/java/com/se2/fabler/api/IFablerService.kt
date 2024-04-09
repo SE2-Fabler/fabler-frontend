@@ -9,7 +9,7 @@ interface IFablerService {
     suspend fun searchBooks(query: String, page: Int, itemsPerPage: Int): List<BookData>
     suspend fun searchUsers(query: String, page: Int, itemsPerPage: Int): List<UserData>
     fun getUserDataAll(userId: Int): UserDataAll
-    fun authUser(credential: CredentialsData): UserData?
+    suspend fun authUser(credential: CredentialsData): UserData?
     fun getFollowers(userId: Int, page: Int, itemsPerPage: Int): List<UserData>
     fun getFollowing(userId: Int, page: Int, itemsPerPage: Int) : List<UserData>
 }

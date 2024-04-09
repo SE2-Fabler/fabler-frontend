@@ -12,6 +12,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import ru.gildor.coroutines.okhttp.await
 import com.se2.fabler.TestDataSource
+import okhttp3.FormBody
+
 private val dataSource: TestDataSource = TestDataSource()
 
 class HttpFablerService : IFablerService {
@@ -85,16 +87,14 @@ class HttpFablerService : IFablerService {
                     s[2],
                     s[3],
                     R.drawable.sample_pfp,
-                    listOf(),
-                    listOf(),
+                    0,
+                    0,
                     true,
                     s[4],
                     s[5],
                     "2021-10-10",
                     true,
-                    true,
-                    listOf(),
-                    listOf()
+                    true
                 ))
             }
             return users
@@ -114,9 +114,49 @@ class HttpFablerService : IFablerService {
             UserDataAll(dataSource.otheruser, dataSource.books, dataSource.books)
     }
 
-    override fun authUser(credential: CredentialsData): UserData? {
+    override suspend fun authUser(credential: CredentialsData): UserData? {
         //TODO
-        Thread.sleep(1000)
+        var endpoint = serverurl + "auth/login"
+        var formBody = FormBody.Builder()
+            .add("username",credential.username)
+            .add("password",credential.password)
+            .build();
+        Log.d(
+            "HttpFablerService",
+            "authUser() API endpoint: $endpoint\n\t"
+        )
+        val request = Request.Builder().url(endpoint).post(formBody).build()
+        try {
+            val response = client.newCall(request).await()
+            // Handle success
+            val js = response.body?.string() ?: ""
+            Log.d("response", js)// Process the response data
+            if (js == "Incorrect password." || js == "Incorrect username."){
+                //HANDLE ERROR
+            } else {
+                val typeToken = object : TypeToken<List<String>>() {}.type
+                val result = Gson().fromJson<List<String>>(js, typeToken)
+                val user = UserData(
+                    result[0].toInt(),
+                    result[1],
+                    result[2],
+                    result[3],
+                    R.drawable.sample_pfp,
+                    0,
+                    0,
+                    true,
+                    result[4],
+                    result[5],
+                    "2021-10-10",
+                    true,
+                    true
+                )
+                Log.d("HttpFablerService", user.toString())
+            }
+        } catch (e: Exception) {
+            Log.d("HttpFablerService", "authUser() API failure: $e")
+            throw e
+        }
         return if(dataSource.userdata.username == credential.username)
             dataSource.userdata
         else
