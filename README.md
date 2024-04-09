@@ -40,3 +40,7 @@
 [Backend](https://github.com/SE2-Fabler/fabler-backend)
 
 [AI Generation](https://github.com/SE2-Fabler/fabler-ai-generation)
+
+## Time Log
+
+[Time Log](https://github.com/SE2-Fabler/fabler-frontend/blob/main/timelog.md)
