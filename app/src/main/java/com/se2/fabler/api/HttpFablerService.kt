@@ -162,6 +162,28 @@ class HttpFablerService : IFablerService {
         else
             null
     }
+    override suspend fun registerUser(credential: CredentialsData, email: String) {
+        var endpoint = serverurl + "auth/register"
+        var formBody = FormBody.Builder()
+            .add("username",credential.username)
+            .add("email", email)
+            .add("password",credential.password)
+            .build();
+        Log.d(
+            "HttpFablerService",
+            "registerUser() API endpoint: $endpoint\n\t"
+        )
+        val request = Request.Builder().url(endpoint).post(formBody).build()
+        try {
+            val response = client.newCall(request).await()
+            // Handle success
+            val js = response.body?.string() ?: ""
+            Log.d("response", js)// Process the response data
+        } catch (e: Exception) {
+            Log.d("HttpFablerService", "authUser() API failure: $e")
+            throw e
+        }
+    }
 
     override suspend fun getFollowers(userId: Int, page: Int, itemsPerPage: Int): List<UserData> {
         val endpoint = serverurl + "user/followers?id=" + userId
@@ -283,12 +305,62 @@ class HttpFablerService : IFablerService {
                 Log.d("HttpFablerService", "authUser() API failure: $e")
                 throw e
             }
+        } else {
+            endpoint += "?=" + followerID
+            val request = Request.Builder().url(endpoint).delete().build()
+            try {
+                val response = client.newCall(request).await()
+                // Handle success
+                val js = response.body?.string() ?: ""
+                Log.d("response", js)// Process the response data
+            } catch (e: Exception) {
+                Log.d("HttpFablerService", "authUser() API failure: $e")
+                throw e
+            }
         }
     }
     override suspend fun setBookmark(userId: Int, bookID: Int, set: Boolean) {
-        TODO("Not yet implemented")
+        var endpoint = serverurl + "user/bookmark"
+        if (set) {
+            val formBody = FormBody.Builder()
+                .add("uid", userId.toString())
+                .add("bid", bookID.toString())
+                .build();
+            val request = Request.Builder().url(endpoint).post(formBody).build()
+            try {
+                val response = client.newCall(request).await()
+                // Handle success
+                val js = response.body?.string() ?: ""
+                Log.d("response", js)// Process the response data
+            } catch (e: Exception) {
+                Log.d("HttpFablerService", "authUser() API failure: $e")
+                throw e
+            }
+        } else {
+            endpoint += "?=" + bookID
+            val request = Request.Builder().url(endpoint).delete().build()
+            try {
+                val response = client.newCall(request).await()
+                // Handle success
+                val js = response.body?.string() ?: ""
+                Log.d("response", js)// Process the response data
+            } catch (e: Exception) {
+                Log.d("HttpFablerService", "authUser() API failure: $e")
+                throw e
+            }
+        }
     }
     override suspend fun deleteBook(bookID: Int) {
-        TODO("Not yet implemented")
+        val endpoint = serverurl + "user/story?=" + bookID
+        val request = Request.Builder().url(endpoint).delete().build()
+        try {
+            val response = client.newCall(request).await()
+            // Handle success
+            val js = response.body?.string() ?: ""
+            Log.d("response", js)// Process the response data
+        } catch (e: Exception) {
+            Log.d("HttpFablerService", "authUser() API failure: $e")
+            throw e
+        }
     }
 }

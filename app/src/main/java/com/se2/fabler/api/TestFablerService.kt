@@ -60,4 +60,19 @@ class TestFablerService : IFablerService {
     override suspend fun getFollowing(userId: Int, page: Int, itemsPerPage: Int): List<UserData> {
         return(listOf(dataSource.userdata, dataSource.otheruser))
     }
+    override suspend fun registerUser(credential: CredentialsData, email: String){
+        TODO("Not yet implemented")
+    }
+    override suspend fun getBookmarked(userId: Int, page: Int, itemsPerPage: Int): List<BookData> {
+        TODO("Not yet implemented")
+    }
+    override suspend fun setFollow(userId: Int, followerID: Int, set: Boolean) {
+        TODO("Not yet implemented")
+    }
+    override suspend fun setBookmark(userId: Int, bookID: Int, set: Boolean) {
+        TODO("Not yet implemented")
+    }
+    override suspend fun deleteBook(bookID: Int) {
+        TODO("Not yet implemented")
+    }
 }

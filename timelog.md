@@ -25,3 +25,4 @@
 | `06-04-2024` | | | | | 8 | Finalized search function |
 | `07-04-2024` | | | | | 10 | Created login system |
 | `08-04-2024` | | | | | 10 | Completed the rest of the backend routes |
+| `011-04-2024` | | | | | 10 | Connected backend routes with frontend |
