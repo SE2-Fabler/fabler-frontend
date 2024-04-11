@@ -163,11 +163,132 @@ class HttpFablerService : IFablerService {
             null
     }
 
-    override fun getFollowers(userId: Int, page: Int, itemsPerPage: Int): List<UserData> {
-        TODO("Not yet implemented")
+    override suspend fun getFollowers(userId: Int, page: Int, itemsPerPage: Int): List<UserData> {
+        val endpoint = serverurl + "user/followers?id=" + userId
+        val request = Request.Builder().url(endpoint).build()
+        try {
+            val response = client.newCall(request).await()
+            // Handle success
+            val js = response.body?.string() ?: ""
+            Log.d("response",js)
+            // Process the response data
+            val typeToken = object : TypeToken<List<List<String>>>() {}.type
+            val result = Gson().fromJson<List<List<String>>>(js, typeToken)
+            val users: MutableList<UserData> = mutableListOf()
+            for (s in result) {
+                users.add(UserData(
+                    s[0].toInt(),
+                    s[1],
+                    s[2],
+                    s[3],
+                    R.drawable.sample_pfp,
+                    0,
+                    0,
+                    true,
+                    s[4],
+                    s[5],
+                    "2021-10-10",
+                    true,
+                    true
+                ))
+            }
+            return users
+        } catch (e: Exception) {
+            Log.d("HttpFablerService", "searchUsers() API failure: $e")
+            throw e
+        }
     }
 
-    override fun getFollowing(userId: Int, page: Int, itemsPerPage: Int): List<UserData> {
+    override suspend fun getFollowing(userId: Int, page: Int, itemsPerPage: Int): List<UserData> {
+        val endpoint = serverurl + "user/following?id=" + userId
+        val request = Request.Builder().url(endpoint).build()
+        try {
+            val response = client.newCall(request).await()
+            // Handle success
+            val js = response.body?.string() ?: ""
+            Log.d("response",js)
+            // Process the response data
+            val typeToken = object : TypeToken<List<List<String>>>() {}.type
+            val result = Gson().fromJson<List<List<String>>>(js, typeToken)
+            val users: MutableList<UserData> = mutableListOf()
+            for (s in result) {
+                users.add(UserData(
+                    s[0].toInt(),
+                    s[1],
+                    s[2],
+                    s[3],
+                    R.drawable.sample_pfp,
+                    0,
+                    0,
+                    true,
+                    s[4],
+                    s[5],
+                    "2021-10-10",
+                    true,
+                    true
+                ))
+            }
+            return users
+        } catch (e: Exception) {
+            Log.d("HttpFablerService", "searchUsers() API failure: $e")
+            throw e
+        }
+    }
+    override suspend fun getBookmarked(userId: Int, page: Int, itemsPerPage: Int): List<BookData> {
+        var endpoint = serverurl + "story/bookmark?id=" + userId
+        val request = Request.Builder().url(endpoint).build()
+        try {
+            val response = client.newCall(request).await()
+            // Handle success
+            val js = response.body?.string() ?: ""
+            Log.d("response",js)
+            // Process the response data
+            val typeToken = object : TypeToken<List<List<String>>>() {}.type
+            val result = Gson().fromJson<List<List<String>>>(js, typeToken)
+            val books: MutableList<BookData> = mutableListOf()
+            for (s in result) {
+                books.add(BookData(
+                    s[0].toInt(),
+                    s[1],
+                    R.drawable.bg1,
+                    s[2],
+                    s[3].toInt(),
+                    s[5],
+                    s[6],
+                    false,
+                    s[7].toInt(),
+                    false
+                ))
+            }
+            return books
+        } catch (e: Exception) {
+            Log.d("HttpFablerService", "searchBooks() API failure: $e")
+            throw e
+        }
+    }
+    override suspend fun setFollow(userId: Int, followerID: Int, set: Boolean) {
+        var endpoint = serverurl + "user/following"
+        if (set) {
+            val formBody = FormBody.Builder()
+                .add("uid", userId.toString())
+                .add("fid", followerID.toString())
+                .build();
+            val request = Request.Builder().url(endpoint).post(formBody).build()
+            try {
+                val response = client.newCall(request).await()
+                // Handle success
+                val js = response.body?.string() ?: ""
+                Log.d("response", js)// Process the response data
+            } catch (e: Exception) {
+                Log.d("HttpFablerService", "authUser() API failure: $e")
+                throw e
+            }
+        }
+    }
+    override suspend fun setBookmark(userId: Int, bookID: Int, set: Boolean) {
+        TODO("Not yet implemented")
+    }
+    override suspend fun deleteBook(bookID: Int) {
         TODO("Not yet implemented")
     }
 }

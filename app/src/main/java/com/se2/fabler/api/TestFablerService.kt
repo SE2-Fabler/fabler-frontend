@@ -53,11 +53,11 @@ class TestFablerService : IFablerService {
             null
     }
 
-    override fun getFollowers(userId: Int, page: Int, itemsPerPage: Int): List<UserData> {
+    override suspend fun getFollowers(userId: Int, page: Int, itemsPerPage: Int): List<UserData> {
         return(listOf(dataSource.userdata, dataSource.otheruser))
     }
 
-    override fun getFollowing(userId: Int, page: Int, itemsPerPage: Int): List<UserData> {
+    override suspend fun getFollowing(userId: Int, page: Int, itemsPerPage: Int): List<UserData> {
         return(listOf(dataSource.userdata, dataSource.otheruser))
     }
 }
