@@ -1,4 +1,4 @@
-# CS 446 / CS 646 / ECE 452 / SE2 [1241] Project
+# Fabler
 
 ## Course Details
 
@@ -30,17 +30,17 @@
 | Name | Quest ID | GitHub |
 | - | - | - |
 | Dutta, Jaxen | [a9dutta](a9dutta@uwaterloo.ca) | [jaxendutta](https://github.com/jaxendutta) |
+| Kang, William | [w9kang](w9kang@uwaterloo.ca) | [william-kang](https://github.com/william-kang) |
 | Mago, Vansh | [vmago](vmago@uwaterloo.ca) | [magovansh9](https://github.com/magovansh9) |
 | Tabouguia, Kevin | [ktabougu](ktabougu@uwaterloo.ca) | [ktabouguia](https://github.com/ktabouguia) |
-| Tao, Frank | [f5tao](f5tao@uwaterloo.ca) | [onyasumi](https://github.com/onyasumi)|
+| Tao, Frank | [f5tao](f5tao@uwaterloo.ca) | [onyasumi](https://github.com/onyasumi) |
 | Wang, Eric | [e74wang](e74wang@uwaterloo.ca) | [freegamenocomplain](https://github.com/freegamenocomplain) |
 
-## Other Repos
+## Other Relevant Repositories
 
-[Backend](https://github.com/SE2-Fabler/fabler-backend)
-
-[AI Generation](https://github.com/SE2-Fabler/fabler-ai-generation)
+- [Backend](https://github.com/SE2-Fabler/fabler-backend)
+- [AI Generation](https://github.com/SE2-Fabler/fabler-ai-generation)
 
 ## Time Log
 
-[Time Log](https://github.com/SE2-Fabler/fabler-frontend/blob/main/timelog.md)
+- [Time Log](https://github.com/SE2-Fabler/fabler-frontend/blob/main/timelog.md)
