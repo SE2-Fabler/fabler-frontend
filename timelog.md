@@ -10,7 +10,7 @@
 | `10-03-2024` | 4 | | | | | | Conducted 4 user interviews based on wireframes and user intuition |
 | `11-03-2024` | 4 | | | | | | Conducted 4 more user interviews based on wireframes and user intuition |
 | `11-03-2024` | | 10 | | | | | Implemented the screens and incorporated frontend functionality for the initial prototype
-| `11-03-2024` | | 4 | | | | | Polished the app prototype for the demo
+| `12-03-2024` | | 5 | | | | | Polished the app prototype for the demo
 | `13-03-2024` | 5 | | | | | | Started building a High Fidelity Figma Prototype |
 | `14-03-2024` | 4 | | | | | | Finished building a High Fidelity Figma Prototype |
 | `16-03-2024` | 5 | | | | | | Conducted 5 user interviews of hi-fi prototypes |
@@ -20,8 +20,10 @@
 | `22-03-2024` | | | | 5 | | | Setting up stable diffusion for AI image gen - Solution: Relocate GPU to dedicated machine |
 | `23-03-2024` | | | | 3 | | | Set up Stable Diffusion - Get NovelAI model working |
 | `23-03-2024` | | 8 | | | | | Investigated Renpy, a library to display visual novels
+| `24-03-2024` | | 5 | | | | | Installed Renpy GUI and tried generating Visual Novels to get a sense of VN file structure
 | `24-03-2024` | 8 | | | | | | Started examining existing UI placeholder set-up and started replacing and modifying components |
 | `25-03-2024` | 7 | | | | | | Continued attempt at fixing existing front-end structure |
+| `26-03-2024` | | 8 | | | | | Investigated simpler alternatives for Renpy, due to complexity and beta web support
 | `26-03-2024` | 10 | | | | | | Scrapped previous UI to implement new polished version, starting with the home screen |
 | `27-03-2024` | 11 | | | | | | Finalized home screen with tabs and switchable views |
 | `28-03-2024` | 10 | | | | | | Structured the home screen book view to have a bookshelf-like view for the sake of neumorphism; started to fine tune the component design choices like search bars, logos, colours, and typography |
@@ -32,7 +34,7 @@
 | `30-03-2024` | | | | 8 | | | Research and implement OpenAI "tool calls/function calling" for predictable ChatGPT outputs |
 | `30-03-2024` | | | | | 6 | | Created basic backend framework, Created database|
 | `31-03-2024` | 10 | | | | | | Removed unneeded test assets and performed major restructuring to the UI; UI is split into pages and views; researched how pagination works in android and used Pager3 to allow user search and book search results to be displayed; finished hooking up most of the pages; added getUserDataAll API call |
-| `31-03-2024` | | 5 | | | | | Learned how web-views work on frontend
+| `31-03-2024` | | 6 | | | | | Learned how web-views work on frontend
 | `31-04-2024` | | | | 4 | | | Implement visual novel story generation |
 | `31-03-2024` | | | | 4 | | | Implement visual novel character generation |
 | `31-03-2024` | | | | 6 | | | Script generation for each scene |
@@ -51,9 +53,9 @@
 | `05-04-2024` | | | | | 6 | | Connected backend to frontend |
 | `06-04-2024` | 6 | | | | | | Fixed HttpFablerService dependencies / syntax errors; made IFablerService into an interface; fixed book long press; fixed book details pop up  |
 | `06-04-2024` | | | | | 8 | | Finalized search function |
-| `06-04-2024` | | 5 | | | | | Worked on installing visual novels locally as standalone applications (after major design change from web rendering)
+| `06-04-2024` | | 6 | | | | | Worked on installing visual novels locally as standalone applications (after major design change from web rendering)
 | `07-04-2024` | 6 | | | | | | Added coroutine version of okHTTP3, added Followers and following page; amended FablerRepo accordingly; new components made, like FormTextField and BackAndTextHeader  |
-| `07-04-2024` | | 5 | | | | | Worked on improving local VN management and compressing APK size
+| `07-04-2024` | | 9 | | | | | Worked on improving local VN management and compressing APK size
 | `07-04-2024` | | | | | 10 | | Created login system |
 | `08-04-2024` | | | | | 10 | | Completed the rest of the backend routes |
 | `11-04-2024` | | | | | 10 | | Connected backend routes with frontend |
