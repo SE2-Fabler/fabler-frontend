@@ -117,6 +117,8 @@ fun SignUpPage(app: AppModel) {
                 onClick = {
                     if (signUpData.value.password == signUpData.value.confirmPassword) {
                         // TODO: Passwords match, proceed with sign up
+
+
                     } else {
                         // TODO: Passwords do not match, show an error message
                     }

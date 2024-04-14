@@ -4,15 +4,15 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.se2.fabler.R
+import com.se2.fabler.TestDataSource
 import com.se2.fabler.models.BookData
 import com.se2.fabler.models.CredentialsData
 import com.se2.fabler.models.UserData
 import com.se2.fabler.models.UserDataAll
+import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import ru.gildor.coroutines.okhttp.await
-import com.se2.fabler.TestDataSource
-import okhttp3.FormBody
 
 private val dataSource: TestDataSource = TestDataSource()
 
@@ -22,8 +22,8 @@ class HttpFablerService : IFablerService {
 
     override suspend fun searchBooks(query: String, page: Int, itemsPerPage: Int): List<BookData> {
         var endpoint = serverurl + "story"
-        if (!query.isNullOrBlank()){
-            endpoint = endpoint + "?title=" + query
+        if (query.isNotBlank()){
+            endpoint = "$endpoint?title=$query"
         }
         Log.d("dbg", "reached2")
         Log.d(
@@ -63,8 +63,8 @@ class HttpFablerService : IFablerService {
 
     override suspend fun searchUsers(query: String, page: Int, itemsPerPage: Int): List<UserData> {
         var endpoint = serverurl + "user"
-        if (!query.isNullOrBlank()){
-            endpoint = endpoint + "?query=" + query
+        if (query.isNotBlank()){
+            endpoint = "$endpoint?query=$query"
         }
         Log.d(
             "HttpFablerService",
@@ -75,12 +75,11 @@ class HttpFablerService : IFablerService {
             val response = client.newCall(request).await()
             // Handle success
             val js = response.body?.string() ?: ""
-            Log.d("response",js)
+            Log.d("response", js)
             // Process the response data
             val typeToken = object : TypeToken<List<List<String>>>() {}.type
             val result = Gson().fromJson<List<List<String>>>(js, typeToken)
-            val users: MutableList<UserData> = mutableListOf()
-            for (s in result) {
+            /*for (s in result) {
                 users.add(UserData(
                     s[0].toInt(),
                     s[1],
@@ -96,8 +95,8 @@ class HttpFablerService : IFablerService {
                     true,
                     true
                 ))
-            }
-            return users
+            }*/
+            return mutableListOf()
         } catch (e: Exception) {
             Log.d("HttpFablerService", "searchUsers() API failure: $e")
             throw e
@@ -116,11 +115,11 @@ class HttpFablerService : IFablerService {
 
     override suspend fun authUser(credential: CredentialsData): UserData? {
         //TODO
-        var endpoint = serverurl + "auth/login"
-        var formBody = FormBody.Builder()
+        val endpoint = serverurl + "auth/login"
+        val formBody = FormBody.Builder()
             .add("username",credential.username)
             .add("password",credential.password)
-            .build();
+            .build()
         Log.d(
             "HttpFablerService",
             "authUser() API endpoint: $endpoint\n\t"
@@ -148,8 +147,8 @@ class HttpFablerService : IFablerService {
                     result[4],
                     result[5],
                     "2021-10-10",
-                    true,
-                    true
+                    imFollowing = true,
+                    isFollowing = true
                 )
                 Log.d("HttpFablerService", user.toString())
             }
@@ -163,12 +162,12 @@ class HttpFablerService : IFablerService {
             null
     }
     override suspend fun registerUser(credential: CredentialsData, email: String) {
-        var endpoint = serverurl + "auth/register"
-        var formBody = FormBody.Builder()
+        val endpoint = serverurl + "auth/register"
+        val formBody = FormBody.Builder()
             .add("username",credential.username)
             .add("email", email)
             .add("password",credential.password)
-            .build();
+            .build()
         Log.d(
             "HttpFablerService",
             "registerUser() API endpoint: $endpoint\n\t"
@@ -211,7 +210,7 @@ class HttpFablerService : IFablerService {
                     s[5],
                     "2021-10-10",
                     true,
-                    true
+                    isFollowing = true
                 ))
             }
             return users
@@ -246,8 +245,8 @@ class HttpFablerService : IFablerService {
                     s[4],
                     s[5],
                     "2021-10-10",
-                    true,
-                    true
+                    imFollowing = true,
+                    isFollowing = true
                 ))
             }
             return users
@@ -257,7 +256,7 @@ class HttpFablerService : IFablerService {
         }
     }
     override suspend fun getBookmarked(userId: Int, page: Int, itemsPerPage: Int): List<BookData> {
-        var endpoint = serverurl + "story/bookmark?id=" + userId
+        val endpoint = serverurl + "story/bookmark?id=" + userId
         val request = Request.Builder().url(endpoint).build()
         try {
             val response = client.newCall(request).await()
@@ -294,7 +293,7 @@ class HttpFablerService : IFablerService {
             val formBody = FormBody.Builder()
                 .add("uid", userId.toString())
                 .add("fid", followerID.toString())
-                .build();
+                .build()
             val request = Request.Builder().url(endpoint).post(formBody).build()
             try {
                 val response = client.newCall(request).await()
@@ -306,7 +305,7 @@ class HttpFablerService : IFablerService {
                 throw e
             }
         } else {
-            endpoint += "?=" + followerID
+            endpoint += "?=$followerID"
             val request = Request.Builder().url(endpoint).delete().build()
             try {
                 val response = client.newCall(request).await()
@@ -325,7 +324,7 @@ class HttpFablerService : IFablerService {
             val formBody = FormBody.Builder()
                 .add("uid", userId.toString())
                 .add("bid", bookID.toString())
-                .build();
+                .build()
             val request = Request.Builder().url(endpoint).post(formBody).build()
             try {
                 val response = client.newCall(request).await()
@@ -337,7 +336,7 @@ class HttpFablerService : IFablerService {
                 throw e
             }
         } else {
-            endpoint += "?=" + bookID
+            endpoint += "?=$bookID"
             val request = Request.Builder().url(endpoint).delete().build()
             try {
                 val response = client.newCall(request).await()

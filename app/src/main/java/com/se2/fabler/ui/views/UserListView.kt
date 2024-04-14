@@ -39,7 +39,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.se2.fabler.TestDataSource
 import com.se2.fabler.models.UserData
-import com.se2.fabler.ui.components.SearchListButton
+import com.se2.fabler.ui.components.CustomButton
 import com.se2.fabler.ui.theme.AppColors.Companion.PRIMARY_FONT_COLOR
 import com.se2.fabler.ui.theme.AppColors.Companion.SCREEN_BACKGROUND_COLOR
 import kotlinx.coroutines.flow.flowOf
@@ -122,7 +122,7 @@ fun UserListView(lazyUserData: LazyPagingItems<UserData>, onSelectUser: (UserDat
                         )
                     }
                     Spacer(modifier = Modifier.weight(1f))
-                    SearchListButton(
+                    CustomButton(
                         "Follow",
                         "Following",
                         Icons.Default.PersonAdd,

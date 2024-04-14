@@ -280,10 +280,10 @@ class TestDataSource {
         get() {
             return UserData (
                 id = 2,
-                name = "Bob Joe Alice",
-                email = "bobjoealice",
-                username = "bja",
-                profileImageResId = R.drawable.sample_pfp,
+                name = "Priscila",
+                email = "poohbear@gmail.com",
+                username = "poohbear",
+                profileImageResId = R.drawable.sample_pfp_2,
                 followers = 7658,
                 following = 654,
                 bookmarkPrivacy = true,

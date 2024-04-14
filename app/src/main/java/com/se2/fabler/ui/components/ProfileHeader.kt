@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Output
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.PersonRemove
 import androidx.compose.material.icons.filled.Settings
@@ -45,10 +46,11 @@ import com.se2.fabler.ui.views.DrawUser
 @Composable
 fun ProfileHeader(
     user: UserData,
-    displaySettingIcon: Boolean,
+    loggedinUser: Boolean,
     app: AppModel,
     onBackClick: () -> Unit,
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
+    onSignOutClick: () -> Unit
 ) {
     Surface(
         Modifier
@@ -68,7 +70,7 @@ fun ProfileHeader(
                     modifier = Modifier.size(36.dp)
                         .clickable(onClick = onBackClick)
                 )
-                if (displaySettingIcon) {
+                if (loggedinUser) {
                     Spacer(Modifier.weight(1f))
                     Icon(
                         imageVector = Icons.Default.Settings,
@@ -108,12 +110,23 @@ fun ProfileHeader(
                                 color = Color.DarkGray
                             )
                         }
-                        if (!displaySettingIcon) {
+                        if (loggedinUser) {
+                            Spacer(modifier = Modifier.weight(1f))
+                            CustomButton(
+                                "Sign Out",
+                                "Signed Out",
+                                Icons.Default.Output,
+                                Icons.Default.Output,
+                                false,
+                                onSignOutClick
+                            )
+                        }
+                        else {
                             Spacer(modifier = Modifier.weight(1f))
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                SearchListButton(
+                                CustomButton(
                                     "Follow",
                                     "Following",
                                     Icons.Default.PersonAdd,
@@ -221,5 +234,5 @@ fun ProfileHeader(
 @Composable
 @Preview(showBackground = true)
 private fun PreviewProfileHeader() {
-    ProfileHeader(TestDataSource().userdata, true, getTestAppModel(), {}, {})
+    ProfileHeader(TestDataSource().userdata, true, getTestAppModel(), {}, {}, {})
 }

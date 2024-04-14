@@ -54,11 +54,8 @@ import com.se2.fabler.getTestAppModel
 import com.se2.fabler.models.CredentialsData
 import com.se2.fabler.ui.components.FormTextField
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.withContext
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 @Composable
 fun PasswordField(

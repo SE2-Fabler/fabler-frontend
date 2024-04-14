@@ -41,6 +41,8 @@ fun ProfilePage(app: AppModel) {
                 }
             }, {
                 // TODO: Implement settings page
+            }, {
+                app.pushView("SignInPage")
             })
             Box {
                 CustomTabStrip(

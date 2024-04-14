@@ -1,5 +1,6 @@
 package com.se2.fabler.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,12 +27,13 @@ import androidx.compose.ui.unit.dp
 import com.se2.fabler.ui.theme.AppColors
 
 @Composable
-fun SearchListButton(
+fun CustomButton(
     name: String,
     activatedName: String,
     icon: ImageVector,
     activatedIcon: ImageVector,
-    active: Boolean
+    active: Boolean,
+    onClick: () -> Unit = {}
 ) {
     val activated = remember { mutableStateOf(active) }
 
@@ -51,7 +53,7 @@ fun SearchListButton(
         shape = RoundedCornerShape(20.dp),
         elevation = ButtonDefaults.buttonElevation(2.dp),
         contentPadding = PaddingValues(top = 0.dp, start = 12.dp, end = 12.dp, bottom = 0.dp),
-        modifier = Modifier.height(40.dp)
+        modifier = Modifier.height(40.dp).clickable(onClick = onClick)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
@@ -71,7 +73,7 @@ fun SearchListButton(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewSearchListButton() {
-    SearchListButton("Name", "Activated Name",
+    CustomButton("Name", "Activated Name",
         icon = Icons.AutoMirrored.Filled.MenuBook,
         activatedIcon = Icons.AutoMirrored.Filled.MenuBook,
         active = false
